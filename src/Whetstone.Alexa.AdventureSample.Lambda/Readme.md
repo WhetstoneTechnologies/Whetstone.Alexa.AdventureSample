@@ -47,3 +47,4 @@ Deploy function to AWS Lambda
     cd "Whetstone.Alexa.AdventureSample/src/Whetstone.Alexa.AdventureSample"
     dotnet lambda deploy-function
 ```
+ngrok http 52280 -host-header="localhost:54768" -subdomain=whetstone

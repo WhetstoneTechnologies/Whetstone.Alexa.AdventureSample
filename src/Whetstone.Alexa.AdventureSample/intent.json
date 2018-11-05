@@ -1,0 +1,131 @@
+﻿{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "adventure",
+            "intents": [
+              {
+                "name": "AMAZON.FallbackIntent",
+                "samples": []
+              },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "BeginIntent",
+                    "slots": [],
+                    "samples": [
+                        "begin",
+                        "start",
+                        "begin game",
+                        "begin adventure",
+                        "start adventure",
+                        "start game"
+                    ]
+                },
+                {
+                    "name": "LeftIntent",
+                    "slots": [],
+                    "samples": [
+                        "hang a left",
+                        "walk left",
+                        "make a left",
+                        "go left",
+                        "left"
+                    ]
+                },
+                {
+                    "name": "RightIntent",
+                    "slots": [],
+                    "samples": [
+                        "make a right",
+                        "hang a right",
+                        "walk right",
+                        "go right",
+                        "right"
+                    ]
+                },
+                {
+                    "name": "TeaIntent",
+                    "slots": [],
+                    "samples": [
+                        "give him tea",
+                        "serve troll tea",
+                        "tea",
+                        "serve tea",
+                        "serve him tea"
+                    ]
+                },
+                {
+                    "name": "PunchIntent",
+                    "slots": [],
+                    "samples": [
+                        "hit troll",
+                        "hit the troll",
+                        "punch the troll",
+                        "punch",
+                        "punch him",
+                        "punch troll"
+                    ]
+                },
+                {
+                    "name": "WalkIntent",
+                    "slots": [],
+                    "samples": [
+                        "go on",
+                        "keep going",
+                        "walk",
+                        "keep walking",
+                        "walk on"
+                    ]
+                },
+                {
+                    "name": "SearchHedgeIntent",
+                    "slots": [],
+                    "samples": [
+                        "search bush",
+                        "look bush",
+                        "search hedge",
+                        "look in the bush"
+                    ]
+                },
+                {
+                    "name": "AMAZON.StartOverIntent",
+                    "samples": []
+                },
+                {
+                    "name": "TalkIntent",
+                    "slots": [],
+                    "samples": [
+                        "talk",
+                        "talk troll",
+                        "talk to him",
+                        "talk to troll"
+                    ]
+                },
+                {
+                    "name": "ResumeIntent",
+                    "slots": [],
+                    "samples": [
+                        "resume adventure",
+                        "resume game",
+                        "resume"
+                    ]
+                }
+            ],
+            "types": []
+        }
+    }
+}
