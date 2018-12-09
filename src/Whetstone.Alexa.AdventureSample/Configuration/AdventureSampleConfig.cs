@@ -28,15 +28,60 @@ namespace Whetstone.Alexa.AdventureSample.Configuration
 {
     public class AdventureSampleConfig
     {
+        /// <summary>
+        /// Root path of the media files.
+        /// </summary>
+        /// <value>
+        /// Path to the media files (e.g. storymedia/adventuresample/)
+        /// </value>
+        public string MediaPath { get; set; }
 
+
+        /// <summary>
+        /// Bucket or AzureBlob container than hosts the media files.
+        /// </summary>
+        /// <value>
+        /// The name of the media container.
+        /// </value>
+        public string MediaContainerName { get; set; }
+
+
+        /// <summary>
+        /// Azure needs to know the name of the media container account. This is not required for AWS.
+        /// </summary>
+        /// <value>
+        /// The name of the media container account.
+        /// </value>
+        public string MediaContainerAccountName { get; set; }
+
+        public string ConfigContainerName { get; set; }
+
+        /// <summary>
+        /// Either the AzureTable or the DynamoDb table name to use to store user state.
+        /// </summary>
+        /// <value>
+        /// The name of the user state table.
+        /// </value>
+        public string UserStateTableName { get; set; }
+
+        /// <summary>
+        /// Path to the directory that contains the YAML configuration file. 
+        /// </summary>
+        /// <value>
+        /// The configuration path to the YAML file.
+        /// </value>
         public string ConfigPath { get; set; }
 
-        public string ConfigBucket { get; set; }
-
+        /// <summary>
+        /// Azure storage container string. This container string is used by both the 
+        /// </summary>
+        /// <value>
+        /// The azure configuration connection string.
+        /// </value>
+        public string AzureConfigConnectionString { get; set; }
 
         public string AwsRegion { get; set; }
 
-        public string DynamoDb { get; set; }
 
     }
 }

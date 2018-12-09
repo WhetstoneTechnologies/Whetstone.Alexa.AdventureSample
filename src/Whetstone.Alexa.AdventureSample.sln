@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Whetstone.Alexa.AdventureSa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Whetstone.Alexa.AdventureSample", "Whetstone.Alexa.AdventureSample\Whetstone.Alexa.AdventureSample.csproj", "{E81476DA-103C-4020-98B2-639FDD48368D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whetstone.Alexa.AdventureSample.WebApi", "Whetstone.Alexa.AdventureSample.WebApi\Whetstone.Alexa.AdventureSample.WebApi.csproj", "{D96F9991-425B-4EC4-B268-31BCF1CD1128}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Whetstone.Alexa.AdventureSample.WebApi", "Whetstone.Alexa.AdventureSample.WebApi\Whetstone.Alexa.AdventureSample.WebApi.csproj", "{D96F9991-425B-4EC4-B268-31BCF1CD1128}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whetstone.Alexa.AdventureSample.CoreFunction", "Whetstone.Alexa.AdventureSample.CoreFunction\Whetstone.Alexa.AdventureSample.CoreFunction.csproj", "{CDAD0D60-0BC1-4FEE-8D8D-1D204153A25B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{D96F9991-425B-4EC4-B268-31BCF1CD1128}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D96F9991-425B-4EC4-B268-31BCF1CD1128}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D96F9991-425B-4EC4-B268-31BCF1CD1128}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDAD0D60-0BC1-4FEE-8D8D-1D204153A25B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDAD0D60-0BC1-4FEE-8D8D-1D204153A25B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDAD0D60-0BC1-4FEE-8D8D-1D204153A25B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDAD0D60-0BC1-4FEE-8D8D-1D204153A25B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

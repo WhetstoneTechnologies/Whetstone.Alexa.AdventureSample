@@ -41,6 +41,19 @@ namespace Whetstone.Alexa.AdventureSample.Tests
         private const string TROLLTALKS_NAME = "TrollTalks";
         private const string GOODTEA_NAME = "GoodTea";
         
+
+        [Fact]
+        public void LoadAdventure()
+        {
+            string advText = File.ReadAllText("sampleadventure/adventure.yaml");
+
+            Deserializer deser = new Deserializer();
+
+            Adventure adv = deser.Deserialize<Adventure>(advText);
+
+
+        }
+
         [Fact()]
         public void BuildStoryNode()
         {

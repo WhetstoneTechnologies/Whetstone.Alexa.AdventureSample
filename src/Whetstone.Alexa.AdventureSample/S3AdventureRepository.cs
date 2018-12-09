@@ -37,9 +37,9 @@ using YamlDotNet.Serialization;
 
 namespace Whetstone.Alexa.AdventureSample
 {
-    public class S3AdventureRepository : IAdventureRepository
+    public class S3AdventureRepository : AdventureReposistoryBase, IAdventureRepository
     {
-        private AdventureSampleConfig _adventureConfig;
+     
         private ILogger<S3AdventureRepository> _logger;
 
         public S3AdventureRepository(ILogger<S3AdventureRepository> logger, IOptions<AdventureSampleConfig> config)
@@ -55,11 +55,11 @@ namespace Whetstone.Alexa.AdventureSample
 
             AdventureSampleConfig advConfig = config.Value;
 
-            if (string.IsNullOrWhiteSpace(advConfig.ConfigBucket))
+            if (string.IsNullOrWhiteSpace(advConfig.MediaContainerName))
                 throw new Exception("ConfigBucket missing from configuration");
 
-            if (string.IsNullOrWhiteSpace(advConfig.ConfigPath))
-                throw new Exception("ConfigPath missing from configuration");
+            //if (string.IsNullOrWhiteSpace(advConfig.ConfigPath))
+            //    throw new Exception("ConfigPath missing from configuration");
 
             if (string.IsNullOrWhiteSpace(advConfig.AwsRegion))
                 throw new Exception("AwsRegion missing from configuration");
@@ -84,19 +84,13 @@ namespace Whetstone.Alexa.AdventureSample
         private async Task<Adventure> GetCachedAdventure()
         {
 
-            string configPath = _adventureConfig.ConfigPath;
-            if (configPath[configPath.Length - 1] != '/')
-                configPath = string.Concat(configPath, '/');
-
-            configPath = string.Concat(configPath, "adventure.yaml");
-
+            string configPath = GetConfigPath();
+        
             string textContents = await GetConfigTextContentsAsync(_adventureConfig.AwsRegion,
-                                                                    _adventureConfig.ConfigBucket,
+                                                                    _adventureConfig.MediaContainerName,
                                                                     configPath);
 
-            Deserializer deser = new Deserializer();
-            Adventure adv = deser.Deserialize<Adventure>(textContents);
-            return adv;
+            return DeserializeAdventure(textContents);
         }
 
 

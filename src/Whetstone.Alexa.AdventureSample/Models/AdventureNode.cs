@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Whetstone.Alexa.AdventureSample.Configuration;
+using YamlDotNet.Serialization;
 
 namespace Whetstone.Alexa.AdventureSample.Models
 {
@@ -37,23 +38,25 @@ namespace Whetstone.Alexa.AdventureSample.Models
 
         internal const string CURNODE_ATTRIB = "currentnode";
 
-        private const string AUDIOTAG = "<audio src=\"https://s3.amazonaws.com/{0}/{1}/{2}\"/>";
+        private const string AUDIOTAG = "<audio src=\"{0}\"/>";
 
-
+        [YamlMember]
         public string Name { get; set; }
 
-
+        [YamlMember]
         public List<SpeechFragement> Reprompt { get; set; }
 
-
+        [YamlMember]
         public List<SpeechFragement> OutputSpeech { get; set; }
 
+        [YamlMember]
         public List<NodeRoute> NodeRoutes { get; set; }
 
+        [YamlMember]
         public CardInfo Card { get; set; }
 
 
-        internal AlexaResponse ToAlexaResponse(string bucketName, string rootPath, string voiceId)
+        internal AlexaResponse ToAlexaResponse(IMediaLinkProcessor linkProcessor, string voiceId)
         {
             AlexaResponse resp = new AlexaResponse()
             {
@@ -64,17 +67,9 @@ namespace Whetstone.Alexa.AdventureSample.Models
                     OutputSpeech = new OutputSpeechAttributes()
                 }
             };
+            resp.Response.OutputSpeech = OutputSpeechBuilder.GetSsmlSpeech(GetSpeechText(this.OutputSpeech, linkProcessor, voiceId));
 
-            string slashRootPath = rootPath[rootPath.Length - 1] == '/' ? rootPath : string.Concat(rootPath, '/');
-
-
-            string audioPath = GetAudioPath(rootPath);
-            string imagePath =  string.Concat("https://s3.amazonaws.com/",bucketName, "/",  slashRootPath, "image/");
-
-
-            resp.Response.OutputSpeech = OutputSpeechBuilder.GetSsmlSpeech(GetSpeechText(this.OutputSpeech, bucketName, audioPath, voiceId));
-
-            string repromptText = GetSpeechText(this.Reprompt, bucketName, audioPath, voiceId);
+            string repromptText = GetSpeechText(this.Reprompt, linkProcessor, voiceId);
 
             if(!string.IsNullOrWhiteSpace(repromptText))
             {
@@ -90,8 +85,8 @@ namespace Whetstone.Alexa.AdventureSample.Models
                 if(!string.IsNullOrWhiteSpace(this.Card.LargeImage) || !string.IsNullOrWhiteSpace(this.Card.SmallImage))
                 {
                     resp.Response.Card = CardBuilder.GetStandardCardResponse(this.Card.Title, this.Card.Text,
-                                                                          string.Concat(imagePath, this.Card.SmallImage),
-                                                                          string.Concat(imagePath, this.Card.LargeImage));
+                                                                         linkProcessor.GetImageUrl(this.Card.SmallImage),
+                                                                         linkProcessor.GetImageUrl(this.Card.LargeImage));
 
                 }
                 else
@@ -116,32 +111,10 @@ namespace Whetstone.Alexa.AdventureSample.Models
         }
 
 
-        internal static string GetSpeechText(List<SpeechFragement> speechFrags, AdventureSampleConfig config, string voiceId)
-        {
-            string outSpeech = null;
-
-            string audioPath = GetAudioPath(config.ConfigPath);
-
-            outSpeech = GetSpeechText(speechFrags, config.ConfigBucket, audioPath, voiceId);
-
-            return outSpeech;
-        }
 
 
-        private static string GetAudioPath(string rootPath)
-        {
-            string audioPath = null;
 
-            string slashRootPath = rootPath[rootPath.Length - 1] == '/' ? rootPath : string.Concat(rootPath, '/');
-
-            audioPath = string.Concat(slashRootPath, "audio");
-
-
-            return audioPath;
-        }
-
-
-        private static string GetSpeechText(List<SpeechFragement> speechFrags, string bucketName, string audioPath, string voiceId)
+        internal static string GetSpeechText(List<SpeechFragement> speechFrags, IMediaLinkProcessor linkProcessor, string voiceId)
         {
             string outputSpeech = null;
            
@@ -165,7 +138,9 @@ namespace Whetstone.Alexa.AdventureSample.Models
 
                             break;
                         case SpeechFramgementType.AudioFile:
-                            speechBuilder.Append(string.Format(AUDIOTAG, bucketName, audioPath, speechFrag.AudioFileName));
+                            string linkPath = linkProcessor.GetAudioUrl(speechFrag.AudioFileName);
+
+                            speechBuilder.Append(string.Format(AUDIOTAG, linkPath));
                             break;
                         case SpeechFramgementType.AudioLibrary:
                             speechBuilder.Append(speechFrag.AudioLibraryTag);
@@ -174,7 +149,7 @@ namespace Whetstone.Alexa.AdventureSample.Models
                     }
                 }
 
-                outputSpeech = string.Concat("<speak>", speechBuilder.ToString(), "</speak>");
+                outputSpeech =$"<speak>{speechBuilder.ToString()}</speak>";
 
             }
 

@@ -20,60 +20,51 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-using Amazon.Polly;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
+using Whetstone.Alexa.AdventureSample.Configuration;
+using Whetstone.Alexa.AdventureSample.Models;
 using YamlDotNet.Serialization;
 
-namespace Whetstone.Alexa.AdventureSample.Models
+namespace Whetstone.Alexa.AdventureSample
 {
-    public class Adventure
+    public abstract class AdventureReposistoryBase
     {
-        [YamlMember]
-        public string StartNodeName { get; set; }
+        protected AdventureSampleConfig _adventureConfig;
 
-        [YamlMember]
-        public string StopNodeName { get; set; }
-
-        [YamlMember]
-        public string HelpNodeName { get; set; }
-
-        [YamlMember]
-        public string UnknownNodeName { get; set; }
-
-        [YamlMember]
-        public string VoiceId { get; set; }
-
-        [YamlMember]
-        public List<AdventureNode> Nodes { get; set; }
-
-
-        internal AdventureNode GetNode(string nodeName)
+        protected string GetConfigPath()
         {
-            AdventureNode foundNode = Nodes?.FirstOrDefault(x => x.Name.Equals(nodeName, StringComparison.OrdinalIgnoreCase));
-            return foundNode;
+            string configPath = _adventureConfig.MediaPath;
+
+            if (string.IsNullOrWhiteSpace(configPath))
+            {
+                configPath = "adventure.yaml";
+            }
+            else
+            {
+                if (configPath[configPath.Length - 1] != '/')
+                    configPath = string.Concat(configPath, '/');
+
+                configPath = string.Concat(configPath, "adventure.yaml");
+            }
+
+            return configPath;
+
+
         }
 
-        internal AdventureNode GetHelpNode()
+
+        protected Adventure DeserializeAdventure(string adventureText)
         {
-            return GetNode(this.HelpNodeName);
+            Deserializer deser = new Deserializer();
+
+
+            Adventure adv = deser.Deserialize<Adventure>(adventureText);
+
+            return adv;
         }
 
-        internal AdventureNode GetStopNode()
-        {
-            return GetNode(this.StopNodeName);
-        }
-
-        internal AdventureNode GetUnknownNode()
-        {
-            return GetNode(this.UnknownNodeName);
-        }
-
-        internal AdventureNode GetStartNode()
-        {
-            return GetNode(this.StartNodeName);
-        }
     }
 }

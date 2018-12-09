@@ -22,78 +22,69 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Whetstone.Alexa.ProgressiveResponse;
-using Microsoft.Extensions.Logging.Console;
-using Microsoft.Extensions.Options;
 using Whetstone.Alexa.Security;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Caching.Distributed;
-//using Microsoft.Extensions.Caching.Redis;
-using Microsoft.Extensions.Caching.Memory;
-using Whetstone.Alexa.AdventureSample;
 
 namespace Whetstone.Alexa.AdventureSample.Configuration
 {
+
+    public enum HostTypeEnum
+    {
+        Aws = 1,
+        Azure =2
+    }
+
     public static class ServiceExtensions
     {
-        public static readonly string CONFIG_PATH= "AdventurePath";
-        public static readonly string BUCKET_CONFIG = "BucketName";
+        public static readonly string CONFIG_CONTAINER = "ConfigContainerName";
+        public static readonly string CONFIG_PATH = "ConfigPath";
+        public static readonly string MEDIA_CONTAINER = "MediaContainerName";
+        public static readonly string MEDIA_PATH = "MediaPath";
+        public static readonly string MEDIA_CONTAINER_ACCOUNT = "MediaContainerAccountName";
+
         internal const string LOG_LEVEL_CONFIG = "LogLevel";
         internal const string REDISSERVER_CONFIG = "RedisServer";
         internal const string REDISSERVERINTANCE_CONFIG = "RedisServerInstance";
         internal const string AWSREGION_CONFIG = "AwsRegion";
-        public const string DYNAMODB_CONFIG = "DynamoDbTable";
+        public static readonly string STATE_TABLE_NAME = "SessionStateTable";
+        internal const string AZURE_CONTAINER_CONFIG = "ConfigConnectionString";
 
-        public static void AddAdventureSampleServices(this IServiceCollection services, IConfiguration config)
+        public static void AddAdventureSampleServices(this IServiceCollection services, IConfiguration config, HostTypeEnum hostType)
         {
             services.AddOptions();
 
 
             string awsRegion = config.GetValue<string>(AWSREGION_CONFIG);
 
-            //services.Configure<SqsConfiguration>(
-            //    options =>
-            //    {
-            //        options.QueueName = config.GetValue<string>(SQSQUEUENAME_CONFIG);
-            //        options.QueueUrl = config.GetValue<string>(SQSQUEUEURL_CONFIG);
-            //        options.AwsRegion = string.IsNullOrWhiteSpace(awsRegion) ? "us-east-1" : awsRegion;
-
-            //    });
 
             string redisServer = config.GetValue<string>(REDISSERVER_CONFIG);
 
+            string azureCon = config.GetValue<string>(AZURE_CONTAINER_CONFIG);
 
-            //if (string.IsNullOrWhiteSpace(redisServer))
-            //{
-            //    // use in memory distributed cache
-            //    services.AddDistributedMemoryCache();
-            //}
-            //else
-            //{
-            //    string instanceNameConfig = config.GetValue<string>(REDISSERVERINTANCE_CONFIG);
-            //    string instanceName = string.IsNullOrWhiteSpace(instanceNameConfig) ?
-            //                                "emailchecker" :
-            //                                instanceNameConfig;
 
-            //    services.AddDistributedRedisCache(opts =>
-            //    {
-            //        opts.Configuration = redisServer;
-            //        opts.InstanceName = instanceNameConfig;
-            //    });
-            //}
+            string configContainerName = config.GetValue<string>(CONFIG_CONTAINER);
+            string configPath = config.GetValue<string>(CONFIG_PATH);
 
-           string dynamoDb = config.GetValue<string>(DYNAMODB_CONFIG);
+
+            string mediaContainerName = config.GetValue<string>(MEDIA_CONTAINER);
+            string mediaRootPath = config.GetValue<string>(MEDIA_PATH);
 
             services.Configure<AdventureSampleConfig>(
             options =>
             {
-                options.ConfigBucket = config.GetValue<string>(BUCKET_CONFIG);
-                options.ConfigPath = config.GetValue<string>(CONFIG_PATH);
+                options.ConfigContainerName = configContainerName;
+                options.ConfigPath = configPath;
+
+                options.MediaContainerName = string.IsNullOrWhiteSpace(mediaContainerName) ? configContainerName : mediaContainerName;
+                options.MediaPath = string.IsNullOrWhiteSpace(mediaRootPath) ? configPath : mediaRootPath;
+                options.MediaContainerAccountName = config.GetValue<string>(MEDIA_CONTAINER_ACCOUNT);
+                
+                options.AzureConfigConnectionString = config.GetValue<string>(AZURE_CONTAINER_CONFIG);
+          
                 options.AwsRegion = string.IsNullOrWhiteSpace(awsRegion) ? "us-east-1" : awsRegion;
-                options.DynamoDb = dynamoDb;
+                options.UserStateTableName = config.GetValue<string>(STATE_TABLE_NAME);
             });
 
             services.AddLogging(logging =>
@@ -111,16 +102,23 @@ namespace Whetstone.Alexa.AdventureSample.Configuration
 #endif               
             });
 
+            switch(hostType)
+            {
+                case HostTypeEnum.Aws:
+                    services.AddTransient<IAdventureRepository, S3AdventureRepository>();
+                    services.AddTransient<ICurrentNodeRepository, DynamoDbCurrentNodeRepository>();
+                    services.AddTransient<IMediaLinkProcessor, S3MediaLinkProcessor>();
+                    break;
+                case HostTypeEnum.Azure:
+                    services.AddTransient<IAdventureRepository, BlobAdventureRepository>();
+                    services.AddTransient<ICurrentNodeRepository, TableCurrentNodeRepository>();
+                    services.AddTransient<IMediaLinkProcessor, BlobMediaLinkProcessor>();
+                    break;
+            }
 
-            services.AddTransient<IAdventureSampleProcessor, AdventureSampleProcessor>();
             services.AddTransient<IProgressiveResponseManager, ProgressiveResponseManager>();
             services.AddTransient<IAlexaUserDataManager, AlexaUserDataManager>();
-            services.AddTransient<IAdventureRepository, S3AdventureRepository>();
-
-
-            // services.AddTransient<ICurrentNodeRepository, SessionNodeRepository>();
-
-            services.AddTransient<ICurrentNodeRepository, DynamoDbCurrentNodeRepository>();
+            services.AddTransient<IAdventureSampleProcessor, AdventureSampleProcessor>();
         }
 
         private static LogLevel GetLogLevel(IConfiguration config)

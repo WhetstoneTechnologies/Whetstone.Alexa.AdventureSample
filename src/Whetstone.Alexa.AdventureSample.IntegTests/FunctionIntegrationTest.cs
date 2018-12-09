@@ -48,7 +48,7 @@ namespace Whetstone.Alexa.AdventureSample.IntegTests
 
             IServiceProvider servProv = GetIntegratedProvider();
 
-            var function = new Function(servProv);
+            var function = new AdventureFunction(servProv);
             var context = new TestLambdaContext();
 
             AlexaResponse resp = null;
@@ -136,7 +136,7 @@ namespace Whetstone.Alexa.AdventureSample.IntegTests
 
             IServiceProvider servProv = GetIntegratedProvider();
 
-            var function = new Function(servProv);
+            var function = new AdventureFunction(servProv);
             var context = new TestLambdaContext();
 
             AlexaResponse resp = null;
@@ -249,7 +249,7 @@ namespace Whetstone.Alexa.AdventureSample.IntegTests
 
             IServiceProvider servProv = GetIntegratedProvider();
 
-            var function = new Function(servProv);
+            var function = new AdventureFunction(servProv);
             var context = new TestLambdaContext();
 
             AlexaResponse resp = null;
@@ -290,9 +290,9 @@ namespace Whetstone.Alexa.AdventureSample.IntegTests
             private IServiceProvider GetIntegratedProvider()
         {
 
-            System.Environment.SetEnvironmentVariable(ServiceExtensions.BUCKET_CONFIG, "dev-custom");
+            System.Environment.SetEnvironmentVariable(ServiceExtensions.CONFIG_CONTAINER, "dev-custom");
             System.Environment.SetEnvironmentVariable(ServiceExtensions.CONFIG_PATH, "adventuresample");
-            System.Environment.SetEnvironmentVariable(ServiceExtensions.DYNAMODB_CONFIG, "dev-session");
+            System.Environment.SetEnvironmentVariable(ServiceExtensions.STATE_TABLE_NAME, "dev-session");
 
             var configBuilder = new ConfigurationBuilder()
                 .AddEnvironmentVariables();
@@ -303,7 +303,7 @@ namespace Whetstone.Alexa.AdventureSample.IntegTests
 
             IServiceCollection servCol = new ServiceCollection();
 
-            servCol.AddAdventureSampleServices(config);
+            servCol.AddAdventureSampleServices(config, HostTypeEnum.Aws);
 
             IServiceProvider prov = servCol.BuildServiceProvider();
 

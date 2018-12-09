@@ -51,7 +51,7 @@ namespace Whetstone.Alexa.AdventureSample.WebApi
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
 
-            services.AddAdventureSampleServices(Configuration);
+            services.AddAdventureSampleServices(Configuration, HostTypeEnum.Aws);
 
         }
 

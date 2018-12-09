@@ -20,60 +20,42 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-using Amazon.Polly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using YamlDotNet.Serialization;
+using System.Threading.Tasks;
+using Whetstone.Alexa.AdventureSample.Models;
 
-namespace Whetstone.Alexa.AdventureSample.Models
+namespace Whetstone.Alexa.AdventureSample
 {
-    public class Adventure
+    public abstract class SessionStoreRepositoryBase
     {
-        [YamlMember]
-        public string StartNodeName { get; set; }
 
-        [YamlMember]
-        public string StopNodeName { get; set; }
-
-        [YamlMember]
-        public string HelpNodeName { get; set; }
-
-        [YamlMember]
-        public string UnknownNodeName { get; set; }
-
-        [YamlMember]
-        public string VoiceId { get; set; }
-
-        [YamlMember]
-        public List<AdventureNode> Nodes { get; set; }
-
-
-        internal AdventureNode GetNode(string nodeName)
+        protected string GetUserId(AlexaRequest req)
         {
-            AdventureNode foundNode = Nodes?.FirstOrDefault(x => x.Name.Equals(nodeName, StringComparison.OrdinalIgnoreCase));
-            return foundNode;
+            string userId = req?.Session?.User?.UserId;
+            return userId;
         }
 
-        internal AdventureNode GetHelpNode()
+
+        public abstract Task<string> GetCurrentNodeNameAsync(AlexaRequest req);
+
+
+
+        public async Task<AdventureNode> GetCurrentNodeAsync(AlexaRequest req, IEnumerable<AdventureNode> nodes)
         {
-            return GetNode(this.HelpNodeName);
+
+            string curNodeName = await GetCurrentNodeNameAsync(req);
+            AdventureNode curNode = null;
+
+            if (!string.IsNullOrWhiteSpace(curNodeName))
+            {
+                curNode = nodes.FirstOrDefault(x => x.Name.Equals(curNodeName));
+            }
+
+            return curNode;
         }
 
-        internal AdventureNode GetStopNode()
-        {
-            return GetNode(this.StopNodeName);
-        }
-
-        internal AdventureNode GetUnknownNode()
-        {
-            return GetNode(this.UnknownNodeName);
-        }
-
-        internal AdventureNode GetStartNode()
-        {
-            return GetNode(this.StartNodeName);
-        }
     }
 }

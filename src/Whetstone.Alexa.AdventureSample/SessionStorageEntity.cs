@@ -20,60 +20,30 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-using Amazon.Polly;
+using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using YamlDotNet.Serialization;
 
-namespace Whetstone.Alexa.AdventureSample.Models
+namespace Whetstone.Alexa.AdventureSample
 {
-    public class Adventure
+    public class SessionStorageEntity : TableEntity
     {
-        [YamlMember]
-        public string StartNodeName { get; set; }
 
-        [YamlMember]
-        public string StopNodeName { get; set; }
-
-        [YamlMember]
-        public string HelpNodeName { get; set; }
-
-        [YamlMember]
-        public string UnknownNodeName { get; set; }
-
-        [YamlMember]
-        public string VoiceId { get; set; }
-
-        [YamlMember]
-        public List<AdventureNode> Nodes { get; set; }
-
-
-        internal AdventureNode GetNode(string nodeName)
+        public SessionStorageEntity(string applicationId, string userId)
         {
-            AdventureNode foundNode = Nodes?.FirstOrDefault(x => x.Name.Equals(nodeName, StringComparison.OrdinalIgnoreCase));
-            return foundNode;
+            this.PartitionKey = applicationId;
+            this.RowKey = userId;
         }
 
-        internal AdventureNode GetHelpNode()
+        public SessionStorageEntity()
         {
-            return GetNode(this.HelpNodeName);
+
         }
 
-        internal AdventureNode GetStopNode()
-        {
-            return GetNode(this.StopNodeName);
-        }
+        public string CurrentNodeName { get; set; }
 
-        internal AdventureNode GetUnknownNode()
-        {
-            return GetNode(this.UnknownNodeName);
-        }
 
-        internal AdventureNode GetStartNode()
-        {
-            return GetNode(this.StartNodeName);
-        }
+        public DateTime LastAccessTime { get; set; }
     }
 }

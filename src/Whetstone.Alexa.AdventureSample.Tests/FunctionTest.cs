@@ -49,7 +49,7 @@ namespace Whetstone.Alexa.AdventureSample.Tests
         {
             AlexaRequest req = GenerateRequest(RequestType.LaunchRequest);
             IServiceProvider serProv = GetTestProvider();
-            var function = new Function(serProv);
+            var function = new AdventureFunction(serProv);
             var context = new TestLambdaContext();
 
             AlexaResponse resp = null;
@@ -152,9 +152,11 @@ namespace Whetstone.Alexa.AdventureSample.Tests
 
             ICurrentNodeRepository curRep = Mock.Of<ICurrentNodeRepository>();
 
+            IMediaLinkProcessor mediaLinker = Mock.Of<IMediaLinkProcessor>();
+
             // IAdventureSampleProcessor adventureProcessor = new AdventureSampleProcessor(mockConfig, emailLogger, userManager, progMan, sqsService);
 
-            IAdventureSampleProcessor adventureProcessor = new AdventureSampleProcessor(mockConfig, adventureLogger, advRep, curRep);
+            IAdventureSampleProcessor adventureProcessor = new AdventureSampleProcessor(adventureLogger, advRep, curRep, mediaLinker);
 
             serviceProvider
                 .Setup(x => x.GetService(typeof(IAdventureSampleProcessor)))

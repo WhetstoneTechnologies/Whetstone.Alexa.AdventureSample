@@ -35,7 +35,7 @@ using Whetstone.Alexa.AdventureSample.Configuration;
 
 namespace Whetstone.Alexa.AdventureSample.Lambda
 {
-    public class Function
+    public class AdventureFunction
     {
 
 
@@ -50,13 +50,13 @@ namespace Whetstone.Alexa.AdventureSample.Lambda
             IServiceCollection servCol = new ServiceCollection();
 
 
-            servCol.AddAdventureSampleServices(config);
+            servCol.AddAdventureSampleServices(config, HostTypeEnum.Aws);
 
             return servCol.BuildServiceProvider();
 
         });
 
-        public Function()
+        public AdventureFunction()
         {
 
         }
@@ -64,7 +64,7 @@ namespace Whetstone.Alexa.AdventureSample.Lambda
 #if DEBUG
         private IServiceProvider _testProvider = null;
 
-        public Function(IServiceProvider testProvider)
+        public AdventureFunction(IServiceProvider testProvider)
         {
             _testProvider = testProvider;
         }
@@ -79,7 +79,6 @@ namespace Whetstone.Alexa.AdventureSample.Lambda
             return _serviceProvider.Value;
         }
 #else
-
         private IServiceProvider GetServiceProvider()
         {
             return _serviceProvider.Value;
@@ -96,7 +95,9 @@ namespace Whetstone.Alexa.AdventureSample.Lambda
         /// <returns></returns>
         public async Task<AlexaResponse> FunctionHandlerAsync(AlexaRequest req, ILambdaContext context)
         {
-            IServiceProvider curProvider = GetServiceProvider();
+            IServiceProvider curProvider = _serviceProvider.Value;
+                
+                GetServiceProvider();
 
             var adventureProcessor = curProvider.GetRequiredService<IAdventureSampleProcessor>();
             return await adventureProcessor.ProcessAdventureRequestAsync(req);

@@ -30,7 +30,7 @@ using Whetstone.Alexa.AdventureSample.Models;
 
 namespace Whetstone.Alexa.AdventureSample
 {
-    public class SessionNodeRepository : ICurrentNodeRepository
+    public class SessionNodeRepository : SessionStoreRepositoryBase, ICurrentNodeRepository
     {
 
         private ILogger<SessionNodeRepository> _logger;
@@ -42,29 +42,9 @@ namespace Whetstone.Alexa.AdventureSample
         }
 
 
-        public async Task<AdventureNode> GetCurrentNodeAsync(AlexaRequest req, IEnumerable<AdventureNode> nodes)
-        {
-
-            string curNodeName = await GetCurrentNodeNameAsync(req);
-            AdventureNode curNode = null;
-
-            if (!string.IsNullOrWhiteSpace(curNodeName))
-            {
-                curNode = nodes.FirstOrDefault(x => x.Name.Equals(curNodeName));
-                if (curNode == null)
-                {
-                    _logger.LogWarning($"No node found for currentnode {curNode}");
-                }
-                else
-                    _logger.LogDebug($"Current node {curNodeName} found");
-
-            }
-
-            return curNode;
-        }
 
 
-        public async Task<string> GetCurrentNodeNameAsync(AlexaRequest req)
+        public override async Task<string> GetCurrentNodeNameAsync(AlexaRequest req)
         {
             string curNodeName = null;
 

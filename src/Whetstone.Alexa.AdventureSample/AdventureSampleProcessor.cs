@@ -37,21 +37,37 @@ namespace Whetstone.Alexa.AdventureSample
 
 
         private ILogger<AdventureSampleProcessor> _logger;
-        private AdventureSampleConfig _adventureConfig;
+       // private AdventureSampleConfig _adventureConfig;
         private IAdventureRepository _adventureRep;
         private ICurrentNodeRepository _curNodeRep;
+        private IMediaLinkProcessor _linkProcessor;
 
 
-        public AdventureSampleProcessor(IOptions<AdventureSampleConfig> adventureConfig,
-                                ILogger<AdventureSampleProcessor> logger,
+        public AdventureSampleProcessor(ILogger<AdventureSampleProcessor> logger,
                               IAdventureRepository adventureRep,
-                              ICurrentNodeRepository curNodeRep)
+                              ICurrentNodeRepository curNodeRep,
+                              IMediaLinkProcessor linkProcessor)
         {
+            if (logger == null)
+                throw new ArgumentNullException("logger is not set");
+
+            if (adventureRep == null)
+                throw new ArgumentNullException("adventureRep is not set");
+
+            if (curNodeRep == null)
+                throw new ArgumentNullException("curNodeRep is not set");
+
+            if (linkProcessor == null)
+                throw new ArgumentNullException("linkProcessor is not set");
+
+
             _logger = logger;
-            _adventureConfig = adventureConfig.Value;
+
+
+          //  _adventureConfig = adventureConfig.Value;
             _adventureRep = adventureRep;
             _curNodeRep = curNodeRep;
-
+            _linkProcessor = linkProcessor;
         }
 
 
@@ -122,8 +138,6 @@ namespace Whetstone.Alexa.AdventureSample
             string nextNodeName = null;
             AlexaResponse resp = null;
 
-
-
             if (intentName.Equals("BeginIntent", StringComparison.OrdinalIgnoreCase) || intentName.Equals(BuiltInIntents.StartOverIntent))
             {
 
@@ -133,7 +147,7 @@ namespace Whetstone.Alexa.AdventureSample
                     throw new Exception($"Start node {adv.StartNodeName} not found");
 
                 nextNodeName = startNode.Name;
-                resp = startNode.ToAlexaResponse(_adventureConfig.ConfigBucket, _adventureConfig.ConfigPath, adv.VoiceId);
+                resp = startNode.ToAlexaResponse(_linkProcessor, adv.VoiceId);
             }
             else if (intentName.Equals(BuiltInIntents.CancelIntent) || intentName.Equals(BuiltInIntents.StopIntent))
             {
@@ -142,11 +156,11 @@ namespace Whetstone.Alexa.AdventureSample
                 if (stopNode == null)
                     throw new Exception($"Start node {adv.StopNodeName} not found");
 
-                resp = stopNode.ToAlexaResponse(_adventureConfig.ConfigBucket, _adventureConfig.ConfigPath, adv.VoiceId);
+                resp = stopNode.ToAlexaResponse(_linkProcessor, adv.VoiceId);
             }
             else if(intentName.Equals("ResumeIntent", StringComparison.OrdinalIgnoreCase))
             {
-                resp = curNode.ToAlexaResponse(_adventureConfig.ConfigBucket, _adventureConfig.ConfigPath, adv.VoiceId);
+                resp = curNode.ToAlexaResponse(_linkProcessor, adv.VoiceId);
             }
             else if (intentName.Equals(BuiltInIntents.HelpIntent))
             { 
@@ -179,9 +193,7 @@ namespace Whetstone.Alexa.AdventureSample
 
                             if (nextNode != null)
                             {
-                                resp = nextNode.ToAlexaResponse(_adventureConfig.ConfigBucket,
-                                                                _adventureConfig.ConfigPath,
-                                                                adv.VoiceId);
+                                resp = nextNode.ToAlexaResponse(_linkProcessor, adv.VoiceId);
                             }
                             else
                                 _logger.LogWarning($"Next node {nextNodeName} on node {curNode} not found for intent {intentName}");
@@ -243,14 +255,14 @@ namespace Whetstone.Alexa.AdventureSample
             }
 
             resp.Response.OutputSpeech = OutputSpeechBuilder.GetSsmlSpeech(
-                                        AdventureNode.GetSpeechText(outFragments, _adventureConfig, voiceId));
+                                        AdventureNode.GetSpeechText(outFragments, _linkProcessor, voiceId));
 
 
             if ((subNode?.Reprompt?.Any()).GetValueOrDefault(false))
             {
                 resp.Response.Reprompt = new RepromptAttributes();
                 resp.Response.Reprompt.OutputSpeech = OutputSpeechBuilder.GetSsmlSpeech(
-                                        AdventureNode.GetSpeechText(subNode.Reprompt, _adventureConfig, voiceId));
+                                        AdventureNode.GetSpeechText(subNode.Reprompt, _linkProcessor, voiceId));
 
             }
 

@@ -37,7 +37,7 @@ using Whetstone.Alexa.AdventureSample.Models;
 
 namespace Whetstone.Alexa.AdventureSample
 {
-    public class DynamoDbCurrentNodeRepository : ICurrentNodeRepository
+    public class DynamoDbCurrentNodeRepository : SessionStoreRepositoryBase, ICurrentNodeRepository
     {
 
         private ILogger<DynamoDbCurrentNodeRepository> _logger;
@@ -55,7 +55,7 @@ namespace Whetstone.Alexa.AdventureSample
             if (config.Value == null)
                 throw new ArgumentException("config.Value cannot be null");
 
-            string dynamoDbVal = config.Value.DynamoDb;
+            string dynamoDbVal = config.Value.UserStateTableName;
             string awsRegionVal = config.Value.AwsRegion;
 
             if (string.IsNullOrWhiteSpace(dynamoDbVal))
@@ -72,22 +72,8 @@ namespace Whetstone.Alexa.AdventureSample
         }
 
 
-        public async Task<AdventureNode> GetCurrentNodeAsync(AlexaRequest req, IEnumerable<AdventureNode> nodes)
-        {
-            string curNodeName = await GetCurrentNodeNameAsync(req);
-            AdventureNode retNode = null;
 
-            
-            if((nodes?.Any()).GetValueOrDefault(false) && !string.IsNullOrWhiteSpace(curNodeName))
-            {
-                retNode = nodes.FirstOrDefault(x => x.Name.Equals(curNodeName, StringComparison.OrdinalIgnoreCase));
-
-            }
-
-            return retNode;
-        }
-
-        public async Task<string> GetCurrentNodeNameAsync(AlexaRequest req)
+        public override async Task<string> GetCurrentNodeNameAsync(AlexaRequest req)
         {
             string userId = GetUserId(req);
             string curNodeName = null;
@@ -136,15 +122,7 @@ namespace Whetstone.Alexa.AdventureSample
             return userRec;
         }
 
-        private string GetUserId(AlexaRequest req)
-        {
-            string userId = req?.Session?.User?.UserId;
 
-            if (string.IsNullOrWhiteSpace(userId))
-                _logger.LogTrace("userId not found in request in DynamoDbCurrentNodeRepository");
-
-            return userId;
-        }
 
         public async Task SetCurrentNodeAsync(AlexaRequest req, AlexaResponse resp, string currentNodeName)
         {
