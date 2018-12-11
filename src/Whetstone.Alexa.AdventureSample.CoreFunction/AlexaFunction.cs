@@ -66,6 +66,35 @@ namespace Whetstone.Alexa.AdventureSample.CoreFunction
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             string textContent = null;
+
+
+            var servProv = _serviceProvider.Value;
+
+            IAlexaRequestVerifier alexaVerifier = servProv.GetRequiredService<IAlexaRequestVerifier>();
+
+
+
+#if DEBUG
+
+
+            bool isValid = false;
+
+            try
+            {
+                isValid = await alexaVerifier.IsCertificateValidAsync(req);
+            }
+            catch(Exception ex)
+            {
+                log.LogError(ex, "Error processing certificate");
+
+            }
+
+            if (!isValid)
+                return new BadRequestResult();
+
+#endif
+
+
             if (req.Body != null)
             {
                 using (StreamReader sr = new StreamReader(req.Body))
@@ -75,17 +104,21 @@ namespace Whetstone.Alexa.AdventureSample.CoreFunction
                 }
             }
 
-
             AlexaRequest alexaRequest = JsonConvert.DeserializeObject<AlexaRequest>(textContent);
 
-            var servProv = _serviceProvider.Value;
 
-           var alexaProcessor = servProv.GetService<IAdventureSampleProcessor>();
+            if (alexaVerifier.IsRequestValid(alexaRequest))
+            {
+                var alexaProcessor = servProv.GetService<IAdventureSampleProcessor>();
 
-            var alexaResponse = await alexaProcessor.ProcessAdventureRequestAsync(alexaRequest);
+                var alexaResponse = await alexaProcessor.ProcessAdventureRequestAsync(alexaRequest);
 
 
-            return (ActionResult) new OkObjectResult(alexaResponse);
+                return (ActionResult)new OkObjectResult(alexaResponse);
+            }
+
+
+            return new BadRequestResult();
         }
     }
 }

@@ -26,6 +26,7 @@ using Whetstone.Alexa.ProgressiveResponse;
 using Whetstone.Alexa.Security;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Whetstone.Alexa.AdventureSample.Configuration
 {
@@ -102,7 +103,10 @@ namespace Whetstone.Alexa.AdventureSample.Configuration
 #endif               
             });
 
-            switch(hostType)
+            services.AddTransient<IDistributedCache, MemoryDistributedCache>();
+            services.AddTransient<IAlexaRequestVerifier, AlexaCertificateVerifier>();
+
+            switch (hostType)
             {
                 case HostTypeEnum.Aws:
                     services.AddTransient<IAdventureRepository, S3AdventureRepository>();

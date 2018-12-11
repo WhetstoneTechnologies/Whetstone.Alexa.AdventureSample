@@ -20,6 +20,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
@@ -37,28 +38,13 @@ namespace Whetstone.Alexa.AdventureSample
     {
         private ILogger<BlobAdventureRepository> _logger;
 
-        public BlobAdventureRepository(ILogger<BlobAdventureRepository> logger, IOptions<AdventureSampleConfig> config)
+        public BlobAdventureRepository( IOptions<AdventureSampleConfig> config, IDistributedCache cache, ILogger<BlobAdventureRepository> logger) : base(config, cache)
         {
             if (logger == null)
                 throw new ArgumentException("logger is null");
 
-            if (config == null)
-                throw new ArgumentException("config cannot be null");
-
-            if (config.Value == null)
-                throw new ArgumentException("config.Value cannot be null");
-
-            AdventureSampleConfig advConfig = config.Value;
-
-            if (string.IsNullOrWhiteSpace(advConfig.MediaContainerName))
-                throw new Exception("ConfigBucket missing from configuration");
-
-            //if (string.IsNullOrWhiteSpace(advConfig.ConfigPath))
-            //    throw new Exception("ConfigPath missing from configuration");
-
-
             _logger = logger;
-            _adventureConfig = advConfig;
+           
         }
 
 
@@ -66,37 +52,40 @@ namespace Whetstone.Alexa.AdventureSample
         public async Task<Adventure> GetAdventureAsync()
         {
 
-            Adventure retAdventure = null;
+            Adventure retAdventure = await GetCachedAdventureAsync();
 
-            string titlePath = GetConfigPath();
 
-            string titleText = await GetStoredAdventureAsync(titlePath, _adventureConfig.MediaContainerName,
-                _adventureConfig.AzureConfigConnectionString);
+            if (retAdventure == null)
+            {
+                string titleText = await GetStoredAdventureAsync(_adventureConfig.AzureConfigConnectionString);
 
-            retAdventure = DeserializeAdventure(titleText);
+                retAdventure = DeserializeAdventure(titleText);
+
+                await SetCachedAdventureAsync(retAdventure);
+            }
+
 
             return retAdventure;
         }
 
 
 
-        private async Task<string> GetStoredAdventureAsync(string titlePath, string containerName, string connectionString)
+        private async Task<string> GetStoredAdventureAsync(string connectionString)
         {
 
             string yamlContents = null;
             CloudStorageAccount cloudStorageAccount = null;
-
-            //  RoleEnvironment.
-            // CloudStorageAccount.TryParse() Role
-
 
             if (CloudStorageAccount.TryParse(connectionString, out cloudStorageAccount))
             {
                 // If the connection string is valid, proceed with operations against Blob storage here.
                 // ...
                 CloudBlobClient blobClient = cloudStorageAccount.CreateCloudBlobClient();
-                CloudBlobContainer container = blobClient.GetContainerReference("titles");
-                CloudBlockBlob blockBlob = container.GetBlockBlobReference(titlePath);
+                CloudBlobContainer container = blobClient.GetContainerReference(_configContainerName);
+
+                string configPath = GetConfigPath();
+
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(configPath);
                 yamlContents = await blockBlob.DownloadTextAsync(Encoding.UTF8, null, null, null);
             }
             else
@@ -106,37 +95,6 @@ namespace Whetstone.Alexa.AdventureSample
 
             return yamlContents;
         }
-
-        //private async Task<string> GetStoredAdventureAsync(string titlePath, string containerName)
-        //{
-
-        //    string yamlContents = null;
-        //    CloudStorageAccount cloudStorageAccount;
-
-        //    string storageConnection = "titles_storage_con";
-
-
-        //    // Retrieve the connection string for use with the application. The storage connection string is stored
-        //    // in an environment variable on the machine running the application called storageConnection.
-        //    // If the environment variable is created after the application is launched in a console or with Visual
-        //    // Studio, the shell or application needs to be closed and reloaded to take the environment variable into account.
-        //    string storageConnectionString = Environment.GetEnvironmentVariable(storageConnection);
-
-        //    if (CloudStorageAccount.TryParse(storageConnectionString, out cloudStorageAccount))
-        //    {
-        //        // If the connection string is valid, proceed with operations against Blob storage here.
-        //        // ...
-        //        CloudBlobClient blobClient = cloudStorageAccount.CreateCloudBlobClient();
-        //        CloudBlobContainer container = blobClient.GetContainerReference("titles");
-        //        CloudBlockBlob blockBlob = container.GetBlockBlobReference(titlePath);
-        //        yamlContents = await blockBlob.DownloadTextAsync(Encoding.u, null, null, null);
-        //    }
-        //    else
-        //    {
-        //        _logger.LogError("Could not connect to storage account");
-        //    }
-
-        //    return yamlContents;
-        //}
+        
     }
 }

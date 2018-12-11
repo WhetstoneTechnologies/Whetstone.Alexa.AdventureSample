@@ -29,6 +29,7 @@ using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Whetstone.Alexa.AdventureSample.Configuration;
@@ -42,59 +43,54 @@ namespace Whetstone.Alexa.AdventureSample
      
         private ILogger<S3AdventureRepository> _logger;
 
-        public S3AdventureRepository(ILogger<S3AdventureRepository> logger, IOptions<AdventureSampleConfig> config)
+        public S3AdventureRepository(IOptions<AdventureSampleConfig> config, IDistributedCache cache, ILogger<S3AdventureRepository> logger) : base(config, cache)
         {
             if (logger == null)
                 throw new ArgumentException("logger is null");
 
-            if (config == null)
-                throw new ArgumentException("config cannot be null");
+            _logger = logger;
 
-            if (config.Value == null)
-                throw new ArgumentException("config.Value cannot be null");
 
-            AdventureSampleConfig advConfig = config.Value;
-
-            if (string.IsNullOrWhiteSpace(advConfig.MediaContainerName))
+            if (string.IsNullOrWhiteSpace(config?.Value?.MediaContainerName))
                 throw new Exception("ConfigBucket missing from configuration");
 
             //if (string.IsNullOrWhiteSpace(advConfig.ConfigPath))
             //    throw new Exception("ConfigPath missing from configuration");
 
-            if (string.IsNullOrWhiteSpace(advConfig.AwsRegion))
+            if (string.IsNullOrWhiteSpace(config?.Value?.AwsRegion))
                 throw new Exception("AwsRegion missing from configuration");
 
-            _logger = logger;
-            _adventureConfig = advConfig;
+
         }
 
         public async Task<Adventure> GetAdventureAsync()
         {
 
-            Adventure adv = await GetCachedAdventure();
+            Adventure adv = await GetCachedAdventureAsync();
 
-            // TODO Cache the yaml file.
-
-
-
+            if(adv==null)
+            {
+                adv = await LoadAdventureFileAsync();
+                await SetCachedAdventureAsync(adv);
+            }
+        
             return adv;
         }
 
 
-        private async Task<Adventure> GetCachedAdventure()
+        private async Task<Adventure> LoadAdventureFileAsync()
         {
 
             string configPath = GetConfigPath();
         
             string textContents = await GetConfigTextContentsAsync(_adventureConfig.AwsRegion,
-                                                                    _adventureConfig.MediaContainerName,
                                                                     configPath);
 
             return DeserializeAdventure(textContents);
         }
 
 
-        private async Task<string> GetConfigTextContentsAsync(string regionName, string containerName, string path)
+        private async Task<string> GetConfigTextContentsAsync(string regionName, string path)
         {
             string configContents = null;
             try
@@ -106,11 +102,11 @@ namespace Whetstone.Alexa.AdventureSample
 
                     GetObjectRequest request = new GetObjectRequest
                     {
-                        BucketName = containerName,
+                        BucketName = _configContainerName,
                         Key = path
                     };
 
-                    _logger.LogInformation($"Getting text content from bucket {containerName} and path {path}");
+                    _logger.LogInformation($"Getting text content from bucket {_configContainerName} and path {path}");
 
                     using (GetObjectResponse response = await client.GetObjectAsync(request))
                     {
@@ -126,17 +122,17 @@ namespace Whetstone.Alexa.AdventureSample
             }
             catch (AmazonS3Exception s3Ex)
             {
-                throw new Exception($"Error retrieving text file {path} from bucket {containerName}", s3Ex);
+                throw new Exception($"Error retrieving text file {path} from bucket {_configContainerName}", s3Ex);
 
             }
             catch (AmazonServiceException servEx)
             {
-                throw new Exception($"Error retrieving text file {path} from bucket {containerName}", servEx);
+                throw new Exception($"Error retrieving text file {path} from bucket {_configContainerName}", servEx);
 
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error retrieving text file {path} from bucket {containerName}", ex);
+                throw new Exception($"Error retrieving text file {path} from bucket {_configContainerName}", ex);
             }
             return configContents;
         }

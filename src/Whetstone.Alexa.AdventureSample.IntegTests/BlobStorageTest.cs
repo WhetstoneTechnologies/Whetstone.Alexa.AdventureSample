@@ -20,6 +20,8 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -137,6 +139,7 @@ namespace Whetstone.Alexa.AdventureSample.IntegTests
             IConfiguration config = builder.Build();
 
             IServiceCollection servCol = new ServiceCollection();
+            
 
             servCol.AddAdventureSampleServices(config, HostTypeEnum.Azure);
 
@@ -146,7 +149,9 @@ namespace Whetstone.Alexa.AdventureSample.IntegTests
 
             var blobOptions = servProv.GetRequiredService<IOptions<AdventureSampleConfig>>();
 
-            IAdventureRepository advRep = new BlobAdventureRepository(blobLogger, blobOptions);
+            var distCache = servProv.GetRequiredService<IDistributedCache>();
+
+            IAdventureRepository advRep = new BlobAdventureRepository(blobOptions, distCache, blobLogger);
 
             var advConfig = await advRep.GetAdventureAsync();
 
