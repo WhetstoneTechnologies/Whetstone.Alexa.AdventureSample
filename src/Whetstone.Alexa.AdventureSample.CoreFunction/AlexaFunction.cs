@@ -67,8 +67,7 @@ namespace Whetstone.Alexa.AdventureSample.CoreFunction
 
             string textContent = null;
 
-
-            var servProv = _serviceProvider.Value;
+            IServiceProvider servProv = _serviceProvider.Value;
 
             IAlexaRequestVerifier alexaVerifier = servProv.GetRequiredService<IAlexaRequestVerifier>();
 

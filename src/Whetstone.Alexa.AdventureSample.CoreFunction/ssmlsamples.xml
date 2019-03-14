@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<prosody volume="+4.08dB">
+  An <phoneme alphabet="x-sampa" ph='"Ig.glls'>Eagles</phoneme> win would have been <phoneme alphabet="x-sampa" ph="nois">nice</phoneme>.
+</prosody>
+
+
+  I can speak with my normal pitch,
+  <prosody pitch="x-high" rate="fast"> but also with a much higher pitch and faster</prosody>,
+  and also <prosody pitch="low" rate="x-slow">with a lower pitch and slowly.</prosody>.
+
+
+  <audio src="https://devstoryenginemedia.blob.core.windows.net/storymedia/adventuresample/audio/trollgrowl.mp3"/>
+  <voice name="Emma\">There's a troll in your way.</voice>
+  <audio src="https://devstoryenginemedia.blob.core.windows.net/storymedia/adventuresample/audio/trollsniff.mp3"/>
+  <voice name="Emma">Would you like to punch him or serve him tea?</voice>
