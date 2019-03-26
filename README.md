@@ -15,28 +15,64 @@ This makes live debugging of Alexa requests a challenge. The solution we have ap
 Standard class library and stand up both a REST API project for debugging and development and a Lambda function project
 for production deployment.
 
-## Environment Configuration for Azure
+## Local Environment Configuration for Azure
 
 Audio, image, and configuration files are used in this sample. To use the files locally in preparation for deployment to Azure, use the Azure blob storage emulator. This section illustrates how to create the storage containers and upload files for local testing. 
 
-Download and install the [Azure Storage Emulator](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator) and the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest). 
+Download and install the [Azure Storage Emulator](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator) and the [Azure Powershell](https://docs.microsoft.com/en-us/powershell/azure/install-Az-ps?view=azps-1.6.0). 
 
+### Installing the Microsoft Azure Storage Emulator
 
 1. Launch the Microsoft Azure Storage Emulator by searching for it in the Windows search bar.
 
 <img src="/src/docs/images/MicrosoftStorageEmulator.png?raw=true" width="40%">
 
-2. Initialize the Azure Storage Emulator by opening a DOS command prompt. Execute the following to initialize the emulator:
+2. Initialize the Microsoft Azure Storage Emulator by opening a DOS command prompt. Execute the following to initialize the emulator:
 ```
 C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator> AzureStorageEmulator.exe init
 ```
-3. Start the Azure Storage Emulator:
+3. Start the Microsoft Azure Storage Emulator:
 ```
 C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator> AzureStorageEmulator.exe start
 ```
-4. Optionally, 
+4. Optionally, configure the Microsoft Azure Storage Emulator to begin on login.
 
+   - Use the Windows search bar to find and launch Task Scheduler.
+  
+   - Create a new Azure Storage Emulator task by selecting Create Task.
+  
+     <img src="/src/docs/images/TaskSchedulerAzTask.png?raw=true" width="50%">
+  
+   - Select the Tiggers tab and create a new trigger. Select the dropdown combo box next to "Begin the task:" and select "At log on"
+  
+     <img src="/src/docs/images/AtLogon.png?raw=true" width="40%">
+  
+   - Select the Actions tab and create a new action. Leave the default entry, "Start a program", in the Action selection.
+  
+     Enter the following in the Program/Script box:
+     ```
+     "C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator\AzureStorageEmulator.exe"
+     ```
+     
+     Enter _start_ in the Add Arguments text box.
+  
+     <img src="/src/docs/images/StorageEmulatorStart.png?raw=true" width="40%">
+  
+   - Click Ok.
+  
+### Installing Azure Powershell
 
+Open a Powershell command prompt with admin rights and execute:
+
+```powershell
+Install-Module -Name Az -AllowClobber
+```
+
+If you have the a prior version of Azure Powershell installed, uninstall the AzureRm module:
+
+```powershell
+Uninstall-AzureRm
+```
 
 
 
