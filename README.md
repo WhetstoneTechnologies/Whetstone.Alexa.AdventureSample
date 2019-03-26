@@ -15,7 +15,15 @@ This makes live debugging of Alexa requests a challenge. The solution we have ap
 Standard class library and stand up both a REST API project for debugging and development and a Lambda function project
 for production deployment.
 
-## Debugging and Development
+## Environment Configuration for Azure
+
+Audio, image, and configuration files are used in this sample. To use the files locally in preparation for deployment to Azure, use the Azure blob storage emulator.
+
+[Azure CLI] (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+
+
+
+
 
 
 
