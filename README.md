@@ -85,7 +85,7 @@ ngrok http 54768
 
 This should launch a temporary server.
 
- <img src="/src/docs/images/ngroksample.png?raw=true" width="40%">
+ <img src="/src/docs/images/ngroksample.png?raw=true" width="70%">
 
 For more references about using nGrok, please see [How To Debug An Alexa .NET Core Skill](https://www.c-sharpcorner.com/article/how-to-debug-an-alexa-net-core-skill/)
 
