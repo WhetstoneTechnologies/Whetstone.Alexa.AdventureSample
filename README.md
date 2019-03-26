@@ -17,7 +17,26 @@ for production deployment.
 
 ## Environment Configuration for Azure
 
-Audio, image, and configuration files are used in this sample. To use the files locally in preparation for deployment to Azure, use the Azure blob storage emulator. Download the [Azure Storage Emulator](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator) and the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
+Audio, image, and configuration files are used in this sample. To use the files locally in preparation for deployment to Azure, use the Azure blob storage emulator. This section illustrates how to create the storage containers and upload files for local testing. 
+
+Download and install the [Azure Storage Emulator](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator) and the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest). 
+
+
+1. Launch the Microsoft Azure Storage Emulator by searching for it in the Windows search bar.
+
+
+2. Initialize the Azure Storage Emulator by opening a DOS command prompt. Execute the following to initialize the emulator:
+```
+C:\> AzureStorageEmulator.exe init
+```
+3. Start the Azure Storage Emulator:
+```
+C:\> AzureStorageEmulator.exe start
+```
+4. Optionally 
+
+
+
 
 
 
