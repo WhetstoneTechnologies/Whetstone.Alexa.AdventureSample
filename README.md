@@ -24,6 +24,7 @@ Download and install the [Azure Storage Emulator](https://docs.microsoft.com/en-
 
 1. Launch the Microsoft Azure Storage Emulator by searching for it in the Windows search bar.
 
+![Storage Emulator](/src/docs/images/MicrosoftStorageEmulator.png?raw=true "Storage Emulator")
 
 2. Initialize the Azure Storage Emulator by opening a DOS command prompt. Execute the following to initialize the emulator:
 ```
