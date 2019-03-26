@@ -19,7 +19,7 @@ for production deployment.
 
 Audio, image, and configuration files are used in this sample. To use the files locally in preparation for deployment to Azure, use the Azure blob storage emulator. This section illustrates how to create the storage containers and upload files for local testing. 
 
-Download and install the [Azure Storage Emulator](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator) and the [Azure Powershell](https://docs.microsoft.com/en-us/powershell/azure/install-Az-ps?view=azps-1.6.0). 
+Download and install the [Azure Storage Emulator](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator) and the [Azure Powershell](https://docs.microsoft.com/en-us/powershell/azure/install-Az-ps?view=azps-1.6.0). Also, download [nGrok](https://ngrok.com/) and sign up for a free account. This will be used to capture requests from Alexa directly on the development machine.
 
 ### Installing the Microsoft Azure Storage Emulator
 
@@ -73,8 +73,21 @@ If you have the a prior version of Azure Powershell installed, uninstall the Azu
 ```powershell
 Uninstall-AzureRm
 ```
+### Installing nGrok
 
+Navigate to [nGrok](https://ngrok.com/) and sign up for a free account. This entitles you to create a public-facing endpoint that routes to your development machine. Download the [nGrok executable for Windows](https://dashboard.ngrok.com/get-started), extract it and place it in your path so it can be referenced easily while debugging.
 
+Verify that it is installed by opening a command prompt and launching it:
+
+```
+ngrok http 54768
+```
+
+This should launch a temporary server.
+
+ <img src="/src/docs/images/ngroksample.png?raw=true" width="40%">
+
+For more references about using nGrok, please see [How To Debug An Alexa .NET Core Skill](https://www.c-sharpcorner.com/article/how-to-debug-an-alexa-net-core-skill/)
 
 
 
