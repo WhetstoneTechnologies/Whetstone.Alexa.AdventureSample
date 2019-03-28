@@ -73,6 +73,15 @@ If you have the a prior version of Azure Powershell installed, uninstall the Azu
 ```powershell
 Uninstall-AzureRm
 ```
+
+This next step assumes you have singed up for an Azure account. If you have not done so, please go to the [Azure Portal](https://portal.azure.com) before taking the next step.
+
+Run _Connect-AzAccount_ and log in with the same account used to connect to the Azure portal.
+
+```powershell
+Connect-AzAccount
+```
+
 ### Installing nGrok
 
 Navigate to [nGrok](https://ngrok.com/) and sign up for a free account. This entitles you to create a public-facing endpoint that routes to your development machine. Download the [nGrok executable for Windows](https://dashboard.ngrok.com/get-started), extract it and place it in your path so it can be referenced easily while debugging.
