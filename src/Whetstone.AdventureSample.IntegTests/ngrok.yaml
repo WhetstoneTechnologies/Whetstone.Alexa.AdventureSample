@@ -1,0 +1,11 @@
+﻿tunnels:
+# The skilltunnel will be used to connect to the Alexa skill and will be used for Alexa requests
+  skilltunnel:
+    proto: http
+    addr: 7071
+    bind_tls: true
+# The medial tunnel will be used for audio and image requests
+  mediatunnel:
+    proto: http
+    addr: 10000
+    bind_tls: true

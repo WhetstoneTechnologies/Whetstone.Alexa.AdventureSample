@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "ConfigContainerName": "titles",  
+    "ConfigPath": "adventuresample",
+    "MediaContainerName": "storymedia",
+    "MediaPath": "adventuresample",
+    "MediaContainerAccountName": "devstoryenginemedia",
+    "ConfigConnectionString": "UseDevelopmentStorage=true",
+    "SessionStateTable": "devsession"
+  }
+}

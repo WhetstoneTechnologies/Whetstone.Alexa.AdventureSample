@@ -1,0 +1,5 @@
+﻿set ConfigContainerName=skillsconfig
+set MediaContainerName=devstoryenginemedia
+set ConfigPath=adventuresample
+set SessionStateTable=devsession
+set ConfigConnectionString=UseDevelopmentStorage=true
