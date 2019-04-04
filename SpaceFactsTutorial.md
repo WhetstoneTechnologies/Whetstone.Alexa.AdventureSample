@@ -17,6 +17,29 @@ Create an Azure account [portal.azure.com](https://portal.azure.com).
 
 These steps follow the same configuration as the [original Alexa tutorial](https://developer.amazon.com/alexa-skills-kit/tutorials/fact-skill-1).
 
+1. Go to the [Amazon Developer Portal](https://developer.amazon.com). In the top-right corner of the screen, click the "Sign In" button. (If you don't already have an account, you will be able to create a new one for free.)
 
+2. Once you have signed in, click Developer Console in the upper right corner.
+
+
+
+
+
+From the Alexa Skills Console select the Create Skill button near the top-right of the list of your Alexa Skills.
+
+Give your new skill a Name. This is the name that will be shown in the Alexa Skills Store, and the name your users will refer to. Also change the locale if so desired. Push Next.
+
+Select the Custom model button to add it to your skill, and select the Create Skill button at the top right.
+
+Build the Interaction Model for your skill
+
+On the left hand navigation panel, select the JSON Editor tab under Interaction Model. In the textfield provided, replace any existing code with the code provided in the Interaction Model (make sure to pick the model that matches your skill's language). Click Save Model.
+If you want to change the skill invocation name, select the Invocation tab. Enter a Skill Invocation Name. This is the name that your users will need to say to start your skill.
+Click "Build Model".
+Note: You should notice that Intents and Slot Types will auto populate based on the JSON Interaction Model that you have now applied to your skill. Feel free to explore the changes here, to learn about Intents, Slots, and Utterances open our technical documentation in a new tab.
+
+Optional: Select an intent by expanding the Intents from the left side navigation panel. Add some more sample utterances for your newly generated intents. Think of all the different ways that a user could request to make a specific intent happen. A few examples are provided. Be sure to click Save Model and Build Model after you're done making changes here.
+
+If your interaction model builds successfully, proceed to the next step. If not, you should see an error. Try to resolve the errors. In our next step of this guide, we will be creating our Lambda function in the AWS developer console, but keep this browser tab open, because we will be returning here on Page #3: Connect VUI to Code.
 
 
