@@ -21,13 +21,17 @@ These steps follow the same configuration as the [original Alexa tutorial](https
 
 2. Once you have signed in, click Developer Console in the upper right corner.
 
+  <img src="/src/docs/images/AlexaSkillCreate01.png?raw=true" width="50%">
 
+3. In the menu bar, select Alexa -> Alexa Skills Kit.
 
+  <img src="/src/docs/images/AlexaSkillCreate02.png?raw=true" width="50%">
 
+4. From the Alexa Skills Console select the Create Skill button near the top-right of the list of your Alexa Skills.
 
-From the Alexa Skills Console select the Create Skill button near the top-right of the list of your Alexa Skills.
+5. Give your new skill a Name. This is the name that will be shown in the Alexa Skills Store, and the name your users will refer to. Leave the other default values selected.
 
-Give your new skill a Name. This is the name that will be shown in the Alexa Skills Store, and the name your users will refer to. Also change the locale if so desired. Push Next.
+6. 
 
 Select the Custom model button to add it to your skill, and select the Create Skill button at the top right.
 
