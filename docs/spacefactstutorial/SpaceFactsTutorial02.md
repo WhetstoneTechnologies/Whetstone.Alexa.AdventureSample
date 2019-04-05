@@ -12,7 +12,8 @@ The original Alexa Space Facts tutorial uses the Amazon Web Services and a Lambd
   
 2. Select Http trigger and select OK.
 
-
+  <img src="/docs/images/AzureFuncCreate02.png?raw=true" width="50%"/>
+  
   This creates a new Azure Http Function:
 
   ``` C#
