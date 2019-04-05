@@ -31,15 +31,21 @@ These steps follow the same configuration as the [original Alexa tutorial](https
 
 5. Give your new skill a Name. This is the name that will be shown in the Alexa Skills Store, and the name your users will refer to. Leave the other default values selected.
 
-6. 
+6. On the Choose a template selection, leave the default Start from scatch option selected. Click Choose.
 
-Select the Custom model button to add it to your skill, and select the Create Skill button at the top right.
+### Build the Interaction Model for your skill
 
-Build the Interaction Model for your skill
+This section applies the natural language processing model Alexa uses to map users' voice commands to intents and slots. 
+
+1. Obtain an intent.json file from:
+
+
 
 On the left hand navigation panel, select the JSON Editor tab under Interaction Model. In the textfield provided, replace any existing code with the code provided in the Interaction Model (make sure to pick the model that matches your skill's language). Click Save Model.
 If you want to change the skill invocation name, select the Invocation tab. Enter a Skill Invocation Name. This is the name that your users will need to say to start your skill.
+
 Click "Build Model".
+
 Note: You should notice that Intents and Slot Types will auto populate based on the JSON Interaction Model that you have now applied to your skill. Feel free to explore the changes here, to learn about Intents, Slots, and Utterances open our technical documentation in a new tab.
 
 Optional: Select an intent by expanding the Intents from the left side navigation panel. Add some more sample utterances for your newly generated intents. Think of all the different ways that a user could request to make a specific intent happen. A few examples are provided. Be sure to click Save Model and Build Model after you're done making changes here.
