@@ -1,4 +1,9 @@
-﻿function Get-PSScriptRoot
+﻿Param (
+   [Parameter(ValueFromPipelineByPropertyName)]
+   [string] $storageAccountName
+)
+
+function Get-PSScriptRoot
 {
     $ScriptRoot = ""
 
@@ -47,7 +52,7 @@ Write-Host $storageContext
  
 New-AzStorageContainer -Name $storecontainer -Context $storageContext -ErrorAction SilentlyContinue
 
-set-AzStorageblobcontent -File $rootscript"/sampleadventure/adventure.yaml" `
+set-AzStorageblobcontent -File $rootscript"/adventuresample/adventure.yaml" `
   -Container $storecontainer `
   -Blob "adventuresample/adventure.yaml" `
   -Context $storageContext `
@@ -57,12 +62,12 @@ New-AzStorageContainer -Name $mediacontainer -Context $storageContext  -ErrorAct
 
 Set-AzStorageContainerAcl -Name $mediacontainer -Context $storageContext -Permission Blob
 
-$audioFiles = Get-ChildItem $rootscript"/sampleadventure/audio"
+$audioFiles = Get-ChildItem $rootscript"/adventuresample/audio"
 
-Upload-Directory $rootscript"/sampleadventure/audio" "adventuresample/audio" $mediacontainer $storageContext
+Upload-Directory $rootscript"/adventuresample/audio" "adventuresample/audio" $mediacontainer $storageContext
 
 
-Upload-Directory $rootscript"/sampleadventure/image" "adventuresample/image" $mediacontainer $storageContext
+Upload-Directory $rootscript"/adventuresample/image" "adventuresample/image" $mediacontainer $storageContext
 
 
 

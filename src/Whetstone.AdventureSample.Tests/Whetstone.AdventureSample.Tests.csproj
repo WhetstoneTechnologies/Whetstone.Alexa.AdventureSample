@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="sampleadventure\adventure.yaml" />
+    <None Remove="adventuresample\adventure.yaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="sampleadventure\adventure.yaml">
+    <Content Include="adventuresample\adventure.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -29,10 +29,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Whetstone.AdventureSample\Whetstone.AdventureSample.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="sampleadventure\NewFolder\" />
   </ItemGroup>
 
 </Project>

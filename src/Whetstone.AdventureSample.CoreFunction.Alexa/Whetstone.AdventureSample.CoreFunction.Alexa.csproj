@@ -23,7 +23,4 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="$(ProjectDir)build.bat&#xD;&#xA;" />
-  </Target>
 </Project>

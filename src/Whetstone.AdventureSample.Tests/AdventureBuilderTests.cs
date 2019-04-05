@@ -45,7 +45,7 @@ namespace Whetstone.Alexa.AdventureSample.Tests
         [Fact]
         public void LoadAdventure()
         {
-            string advText = File.ReadAllText("sampleadventure/adventure.yaml");
+            string advText = File.ReadAllText("adventuresample/adventure.yaml");
 
             Deserializer deser = new Deserializer();
 
