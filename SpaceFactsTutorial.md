@@ -37,14 +37,13 @@ These steps follow the same configuration as the [original Alexa tutorial](https
 
 This section applies the natural language processing model Alexa uses to map users' voice commands to intents and slots. 
 
-1. Obtain an intent.json file from:
+1. Obtain an intent.json file from the following URL. Use the intent model approapriate to your locale. Download to your local machine and open in a text editor.
 
+[https://github.com/WhetstoneTechnologies/Whetstone.Alexa.AdventureSample/tree/master/src/Demo.SpaceFacts/intents](https://github.com/WhetstoneTechnologies/Whetstone.Alexa.AdventureSample/tree/master/src/Demo.SpaceFacts/intents)
 
+2. On the left hand navigation panel, select the JSON Editor tab under Interaction Model. In the textfield provided, replace any existing code with the code provided in the Interaction Model (make sure to pick the model that matches your skill's language). Click Save Model.
 
-On the left hand navigation panel, select the JSON Editor tab under Interaction Model. In the textfield provided, replace any existing code with the code provided in the Interaction Model (make sure to pick the model that matches your skill's language). Click Save Model.
-If you want to change the skill invocation name, select the Invocation tab. Enter a Skill Invocation Name. This is the name that your users will need to say to start your skill.
-
-Click "Build Model".
+3. Click "Build Model".
 
 Note: You should notice that Intents and Slot Types will auto populate based on the JSON Interaction Model that you have now applied to your skill. Feel free to explore the changes here, to learn about Intents, Slots, and Utterances open our technical documentation in a new tab.
 
