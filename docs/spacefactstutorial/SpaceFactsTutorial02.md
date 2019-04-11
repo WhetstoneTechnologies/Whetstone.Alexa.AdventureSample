@@ -253,3 +253,5 @@ SpaceRequestType spaceReqType = GetSpaceRequestType(alexaRequest.Request);
 11. Right click on the AlexaDemo.SpaceFacts project in the Solution Explorer window and select Debug->Start New Instance. A command line window should launch that starts a web server that listens on port 7071 and directs all HTTP requests to the Azure Function.
 
 <img src="/docs/images/LocalAzureFunction01.png?raw=true" width="50%"/>
+
+[Previous Module](/docs/spacefactstutorial/SpaceFactsTutorial01.md) [Next Module](/docs/spacefactstutorial/SpaceFactsTutorial03.md)

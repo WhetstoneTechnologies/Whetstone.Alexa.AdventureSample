@@ -29,11 +29,8 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Whetstone.Alexa;
-using Whetstone.AdventureSample.Configuration;
-using Whetstone.AdventureSample.Alexa;
+using Whetstone.Alexa.Security;
 using Microsoft.Azure.WebJobs.Hosting;
 using Whetstone.AdventureSample.CoreFunction.Alexa;
 using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
@@ -76,20 +73,16 @@ namespace Whetstone.AdventureSample.CoreFunction.Alexa
             if (!isValid)
                 return new BadRequestResult();
 
+            AlexaRequest alexaRequest = null;
 
-            if (req.Body != null)
+            try
             {
                 using (StreamReader sr = new StreamReader(req.Body))
                 {
                     //This allows you to do one Read operation.
                     textContent = sr.ReadToEnd();
                 }
-            }
 
-            AlexaRequest alexaRequest = null;
-
-            try
-            {
                 alexaRequest = JsonConvert.DeserializeObject<AlexaRequest>(textContent);
             }
             catch(Exception ex)

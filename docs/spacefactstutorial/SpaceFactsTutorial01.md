@@ -59,4 +59,4 @@ Optional: Select an intent by expanding the Intents from the left side navigatio
 
 If your interaction model builds successfully, proceed to the next step. If not, you should see an error. Try to resolve the errors. In our next step of this guide, we will be creating our Lambda function in the AWS developer console, but keep this browser tab open, because we will be returning here on Page #3: Connect VUI to Code.
 
-
+[Next Module](/docs/spacefactstutorial/SpaceFactsTutorial02.md)

@@ -32,7 +32,7 @@ using System.IO;
 using Microsoft.Extensions.Caching.Distributed;
 using Org.BouncyCastle.Security.Certificates;
 using Microsoft.Extensions.Logging;
-using Whetstone.AdventureSample.Alexa;
+using Whetstone.Alexa.Security;
 
 namespace Whetstone.AdventureSample.WebApi.Security
 {

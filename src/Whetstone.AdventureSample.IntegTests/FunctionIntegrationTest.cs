@@ -41,7 +41,7 @@ using Microsoft.Extensions.Logging;
 using System.Linq;
 using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
-using Whetstone.AdventureSample.Alexa;
+using Whetstone.Alexa.Security;
 using Whetstone.Ngrok.ApiClient;
 using Whetstone.Ngrok.ApiClient.Models;
 

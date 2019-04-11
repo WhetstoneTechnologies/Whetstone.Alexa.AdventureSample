@@ -44,13 +44,13 @@ You should have a window that looks similar to:
 
 10. Select the Test menu item and enable testing in Development.
 
-<img src="/docs/images/AlexaSkillConfig04.png?raw=true" width="80%"/>
+<img src="/docs/images/AlexaSkillConfig04.png?raw=true" width="50%"/>
 
 11. Start a debug session of the AlexaSpaceFactsFunction in Visual Studio and set a breakpoint in the first line of the Run method.
 
 12. In the test harness, enter "start space facts"
 
-<img src="/docs/images/AlexaSkillConfig05.png?raw=true" width="80%"/>
+<img src="/docs/images/AlexaSkillConfig05.png?raw=true" width="50%"/>
 
 13. Verify the breakpoint is hit and allow it to proceed by using F5. You should have a similar response in the Alexa Test harness. _NOTE:_ Alexa will issue additional requests if it does not receive a response. Debugging directly from the Alexa test harness can be frustrating when dealing with multiple duplicate requests. 
 
