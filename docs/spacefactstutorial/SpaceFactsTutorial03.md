@@ -59,3 +59,5 @@ You should have a window that looks similar to:
 14. Open a browser and navigate to http://localhost:4040. nGrok creates a listener at this port that reports all traffic. It also includes a Replay option that you can use to debug single requests. You can also copy the Alexa request to a test project and use it for unit testing.
 
 <img src="/docs/images/AlexaSkillConfig07.png?raw=true" width="80%"/>
+
+[Previous Module](/docs/spacefactstutorial/SpaceFactsTutorial02.md) | [Next Module](/docs/spacefactstutorial/SpaceFactsTutorial04.md)

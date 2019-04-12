@@ -16,13 +16,4 @@ namespace Whetstone.Ngrok.ApiClient.Models
         public string Uri { get; set; }
     }
 
-
-
-
-
-
-
-
-
-
 }

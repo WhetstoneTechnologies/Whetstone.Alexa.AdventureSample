@@ -11,6 +11,10 @@ using Whetstone.Alexa;
 using System.Collections.Generic;
 using System.Threading;
 using Whetstone.Alexa.Security;
+using System.Linq;
+using AlexaDemo.SpaceFacts.Models;
+using System.Configuration;
+using Whetstone.Alexa.ProgressiveResponse;
 
 namespace AlexaDemo.SpaceFacts
 {
@@ -20,7 +24,7 @@ namespace AlexaDemo.SpaceFacts
         private const string HELP_MESSAGE = "You can say tell me a space fact, or, you can say exit... What can I help you with?";
         private const string HELP_REPROMPT = "What can I help you with?";
         private const string STOP_MESSAGE = "Goodbye!";
-
+        private const string SCIFISOUNDFILE = "254031-jagadamba-space-sound.mp3";
 
         private static readonly ThreadLocal<Random> threadLocalRandom
             = new ThreadLocal<Random>(() => new Random());
@@ -64,6 +68,8 @@ namespace AlexaDemo.SpaceFacts
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
+
+            
 
 #if !DEBUG
             //https://developer.amazon.com/docs/custom-skills/host-a-custom-skill-as-a-web-service.html
@@ -109,13 +115,50 @@ namespace AlexaDemo.SpaceFacts
             SpaceRequestType spaceReqType = GetSpaceRequestType(alexaRequest.Request);
 
 
+     
+
             AlexaResponse alexaResp = null;
             switch(spaceReqType)
             {
                 case SpaceRequestType.GetFact:
+                 //   ProgressiveResponseManager progressiveManager = new ProgressiveResponseManager(log);
+                 //   await progressiveManager.SendProgressiveResponseAsync(alexaRequest, "Processing request");
+
+                    Whetstone.Alexa.Security.AlexaUserDataManager userData = new AlexaUserDataManager(log);
+
+                    string givenName = null;
+                    bool isPermissionGiven = true;
+                    try
+                    {
+                        givenName = await userData.GetAlexaUserGivenNameAsync(alexaRequest.Context.System.ApiEndpoint, alexaRequest.Context.System.ApiAccessToken);
+                    }
+                    catch(Exception ex)
+                    {
+                        isPermissionGiven = false;
+
+                    }
+
+
                     string spaceFact = GetRandomFact();
-                    string factText = string.Concat(Whetstone.Alexa.Audio.AmazonSoundLibrary.SciFi.SCIFI_ZAP_ELECTRIC_01 , GET_FACT_MESSAGE, spaceFact);
+                    string storageAccount = Environment.GetEnvironmentVariable("StorageAccount");
+                    string spaceUrl = GetMediaAudioUrl(SCIFISOUNDFILE, storageAccount);
+
+                    string audioTag = $"<audio src=\"{spaceUrl}\"/>";
+
+                    string factText = null;
+
+                    if(string.IsNullOrWhiteSpace(givenName))
+                        factText = string.Concat(audioTag, GET_FACT_MESSAGE, spaceFact);
+                    else
+                        factText = string.Concat(audioTag, givenName, "  ", GET_FACT_MESSAGE, spaceFact);
+
+
                     alexaResp = GetAlexaResponse(factText);
+
+                    if (!isPermissionGiven)
+                    {
+                        AddPermissionRequest(alexaResp);
+                    }
                     break;
                 case SpaceRequestType.Help:
                     alexaResp = GetAlexaResponse(HELP_MESSAGE, HELP_REPROMPT);
@@ -128,6 +171,37 @@ namespace AlexaDemo.SpaceFacts
             return new OkObjectResult(alexaResp);
         }
 
+        private static void AddPermissionRequest(AlexaResponse alexaResp)
+        {
+            alexaResp.Response.Card = new CardAttributes();
+            alexaResp.Response.Card.Type = CardType.AskForPermissionsConsent;
+            alexaResp.Response.Card.Permissions = new List<string>();
+            alexaResp.Response.Card.Permissions.Add("alexa::profile:given_name:read");
+
+            
+
+        }
+
+        private static string GetMediaAudioUrl(string mediaFile, string storageAccount)
+        {
+
+            string audioPath = $"https://{storageAccount}.blob.core.windows.net/skillsmedia/spacefacts/audio/{mediaFile}";
+            return audioPath;
+        }
+
+        private static async Task<string> GetMediaAudioUrlLocalAsync(string mediaFile, ILogger logger)
+        {
+            NgrokClient locClient = new NgrokClient(logger);
+
+            var tunnelList = await locClient.GetTunnelListAsync();
+
+            Tunnel localTunnel = tunnelList.FirstOrDefault(x => x.Name.Equals("mediatunnel"));
+
+            string audioPath = $"{localTunnel.PublicUrl}/devstoreaccount1/skillsmedia/spacefacts/audio/{mediaFile}";
+            
+            return audioPath;
+
+        }
 
         private static AlexaResponse GetAlexaResponse(string responseText)
         {
@@ -143,8 +217,8 @@ namespace AlexaDemo.SpaceFacts
 
             alexaResp.Response.OutputSpeech = new OutputSpeechAttributes()
             {
-                Type = OutputSpeechType.PlainText,
-                Text = responseText
+                Type = OutputSpeechType.Ssml,
+                Ssml = string.Concat("<speak>", responseText, "</speak>")
 
             };
 

@@ -254,4 +254,4 @@ SpaceRequestType spaceReqType = GetSpaceRequestType(alexaRequest.Request);
 
 <img src="/docs/images/LocalAzureFunction01.png?raw=true" width="50%"/>
 
-[Previous Module](/docs/spacefactstutorial/SpaceFactsTutorial01.md) [Next Module](/docs/spacefactstutorial/SpaceFactsTutorial03.md)
+[Previous Module](/docs/spacefactstutorial/SpaceFactsTutorial01.md) | [Next Module](/docs/spacefactstutorial/SpaceFactsTutorial03.md)

@@ -64,4 +64,4 @@ In this step, we'll deploy the AlexaSpaceFactsFunction to Azure and update the A
 
 <img src="/docs/images/FunctionPublish11.png?raw=true" width="50%"/>
 
-[Previous Module](/docs/spacefactstutorial/SpaceFactsTutorial03.md) [Next Module](/docs/spacefactstutorial/SpaceFactsTutorial05.md)
+[Previous Module](/docs/spacefactstutorial/SpaceFactsTutorial03.md) | [Next Module](/docs/spacefactstutorial/SpaceFactsTutorial05.md)

@@ -1,4 +1,4 @@
-# SpaceFacts -- Module 5 - Prepare for Production (Optional)
+# SpaceFacts -- Module 5 - Prepare for Production
 
 ## Introduction
 
@@ -37,4 +37,4 @@ This distribution form drives when appears in the public listing of the Alexa Sk
 
  <img src="/docs/images/SkillPublish01.png?raw=true" width="50%"/>
 
-[Previous Module](/docs/spacefactstutorial/SpaceFactsTutorial04.md)
+[Previous Module](/docs/spacefactstutorial/SpaceFactsTutorial04.md) | [Next Module](/docs/spacefactstutorial/SpaceFactsTutorial06.md)
