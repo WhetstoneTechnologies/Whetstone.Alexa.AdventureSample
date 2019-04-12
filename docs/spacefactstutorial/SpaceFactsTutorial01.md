@@ -47,7 +47,7 @@ This section applies the natural language processing model Alexa uses to map use
 
 1. Obtain an intent.json file from the following link. Use the file appropriate to your local (e.g. en-US for the United States).
 
-[https://github.com/WhetstoneTechnologies/Whetstone.Alexa.AdventureSample/tree/master/src/Demo.SpaceFacts/intents](https://github.com/WhetstoneTechnologies/Whetstone.Alexa.AdventureSample/tree/master/src/Demo.SpaceFacts/intents)
+[https://github.com/WhetstoneTechnologies/Whetstone.Alexa.AdventureSample/tree/master/src/AlexaDemo.SpaceFacts/intents](https://github.com/WhetstoneTechnologies/Whetstone.Alexa.AdventureSample/tree/master/src/AlexaDemo.SpaceFacts/intents)
 
 2.  On the left hand navigation panel, select the JSON Editor tab under Interaction Model. In the textfield provided, replace any existing code with the code provided in the Interaction Model (make sure to pick the model that matches your skill's language). Click Save Model.
 
