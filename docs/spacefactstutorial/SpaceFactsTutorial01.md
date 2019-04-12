@@ -57,6 +57,6 @@ Note: You should notice that Intents and Slot Types will auto populate based on 
 
 Optional: Select an intent by expanding the Intents from the left side navigation panel. Add some more sample utterances for your newly generated intents. Think of all the different ways that a user could request to make a specific intent happen. A few examples are provided. Be sure to click Save Model and Build Model after you're done making changes here.
 
-If your interaction model builds successfully, proceed to the next step. If not, you should see an error. Try to resolve the errors. In our next step of this guide, we will be creating our Lambda function in the AWS developer console, but keep this browser tab open, because we will be returning here on Page #3: Connect VUI to Code.
+If your interaction model builds successfully, proceed to the next step. If not, you should see an error. Try to resolve the errors. In our next step of this guide, we will be creating our Lambda function in the AWS developer console.
 
 [Next Module](/docs/spacefactstutorial/SpaceFactsTutorial02.md)
