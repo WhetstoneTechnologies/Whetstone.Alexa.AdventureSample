@@ -15,11 +15,15 @@ Create an Azure account [portal.azure.com](https://portal.azure.com).
 
 Create an account on [nGrok](https://ngrok.com/) and download the ngrok.exe. Make it available in your local path. This creates a public IP address used to tunnel to your development environment.
 
-Install Visual Studio 2017 Community Edition (or another edition)
+Install Visual Studio 2017 Community Edition (or another edition). Visual Studio 2019 (and edition) will also work.
 
 Enable Azure development tools in the Visual Studio 2017 install.
 
  <img src="/docs/images/AzureDevTools.png?raw=true" width="50%">
+
+If using Visual Studio 2017, install [.NET Core 2.2.106 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2#sdk-2.2.106).
+
+If using Visual Studio 2019, install [.NET Core 2.2.203 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2#sdk-2.2.203).
 
 ## Part One - Create the Azure Function 
 
