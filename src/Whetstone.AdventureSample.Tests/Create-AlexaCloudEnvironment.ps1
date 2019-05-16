@@ -13,7 +13,7 @@ skillsconfig - hosts a yaml configuration file.
 skillsmedia - hosts audio and image files. Contents are read only for public access so that Alexa users can retrieve the contents.
 
 .EXAMPLE
-./Create-AlexaCloudEnvironment.ps1 sbsalexaskills
+./Create-AlexaCloudEnvironment.ps1  <SubscriptionId> sbsalexaskills
 
 .LINK
 https://github.com/WhetstoneTechnologies/Whetstone.Alexa.AdventureSample
@@ -25,6 +25,7 @@ https://github.com/WhetstoneTechnologies/Whetstone.Alexa.AdventureSample
 Param (
    [Parameter(Mandatory=$true, HelpMessage="Enter a unique Azure Storage Account Name", Position=1)]
    [string] $StorageAccountName
+  
 )
 
 #Retrieves the root directory of the currently executing script
@@ -107,6 +108,7 @@ else
 
 $storageAccount = Get-AzStorageAccount -Name $StorageAccountName -ResourceGroupName $resourceGroupName -ErrorAction SilentlyContinue
 
+# Get-AzStorageAccount -Name sbsalexaskills -ResourceGroupName alexaskillsresources
 if(!$storageAccount)
 {
 

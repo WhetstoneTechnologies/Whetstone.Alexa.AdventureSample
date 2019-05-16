@@ -113,6 +113,12 @@ namespace Whetstone.AdventureSample
                         _logger.LogInformation(requestLogInfo);
                         response = await GetIntentResponseAsync(request);
                         break;
+                    case RequestType.SessionEndedRequest:
+                        requestLogInfo = "Processing intent request";
+                        _logger.LogInformation(requestLogInfo);
+                        response = new AlexaResponse();
+                        break;
+
                 }
             }
 

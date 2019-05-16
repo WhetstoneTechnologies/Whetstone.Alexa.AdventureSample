@@ -46,11 +46,15 @@ $storecontainer = "skillsconfig"
 
 $mediacontainer = "skillsmedia"
 
+$sessionTableName = "devsession"
+
 $storageContext= New-AzStorageContext -ConnectionString $storageConnectionString
 
 Write-Host $storageContext
  
 New-AzStorageContainer -Name $storecontainer -Context $storageContext -ErrorAction SilentlyContinue
+
+New-AzStorageTable –Name $sessionTableName –Context  $storageContext -ErrorAction SilentlyContinue
 
 set-AzStorageblobcontent -File $rootscript"/adventuresample/adventure.yaml" `
   -Container $storecontainer `

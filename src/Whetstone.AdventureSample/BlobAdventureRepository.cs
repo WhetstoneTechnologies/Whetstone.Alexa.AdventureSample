@@ -78,20 +78,34 @@ namespace Whetstone.AdventureSample
                 // If the connection string is valid, proceed with operations against Blob storage here.
                 // ...
                 CloudBlobClient blobClient = cloudStorageAccount.CreateCloudBlobClient();
-                CloudBlobContainer container = blobClient.GetContainerReference(_configContainerName);
-
-                string configPath = GetConfigPath();
-
-                CloudBlockBlob blockBlob = container.GetBlockBlobReference(configPath);
+                CloudBlobContainer container = null;
 
                 try
                 {
-                    yamlContents = await blockBlob.DownloadTextAsync();
+                  container=  blobClient.GetContainerReference(_configContainerName);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"Error getting file {configPath} from container {_configContainerName} and account {cloudStorageAccount.BlobEndpoint.ToString()}");
+                    _logger.LogError(ex, $"Error getting file container {_configContainerName} and account {cloudStorageAccount.BlobEndpoint.ToString()}");
 
+                }
+
+                if (container != null)
+                {
+                    string configPath = GetConfigPath();
+
+                    CloudBlockBlob blockBlob = container.GetBlockBlobReference(configPath);
+
+                    try
+                    {
+                        yamlContents = await blockBlob.DownloadTextAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex,
+                            $"Error getting file {configPath} from container {_configContainerName} and account {cloudStorageAccount.BlobEndpoint.ToString()}");
+
+                    }
                 }
             }
             else

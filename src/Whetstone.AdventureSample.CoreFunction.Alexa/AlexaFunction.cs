@@ -27,44 +27,52 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Whetstone.Alexa;
 using Whetstone.Alexa.Security;
-using Microsoft.Azure.WebJobs.Hosting;
-using Whetstone.AdventureSample.CoreFunction.Alexa;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
-[assembly: WebJobsStartup(typeof(StartUp))]
+[assembly: FunctionsStartup(typeof(Whetstone.AdventureSample.CoreFunction.Alexa.StartUp))]
 
 namespace Whetstone.AdventureSample.CoreFunction.Alexa
 {
 
-    public static class AlexaFunction
+    public class AlexaFunction
     {
+        private IAlexaRequestVerifier _reqVerifier;
+
+        private IAdventureSampleProcessor _adventureProcessor;
+
+        public AlexaFunction(IAlexaRequestVerifier reqVerifier, IAdventureSampleProcessor adventureProcessor)
+        {
+            _reqVerifier = reqVerifier ?? throw new ArgumentNullException($"{nameof(reqVerifier)} cannot be null");
+
+            _adventureProcessor = adventureProcessor ??
+                                  throw new ArgumentNullException($"{nameof(adventureProcessor)} cannot be null");
+
+
+        }
+
+
+
 
         [FunctionName("AlexaFunction")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log,
-            [Inject] IAlexaRequestVerifier alexaVerifier,
-            [Inject] IAdventureSampleProcessor adventureProcessor)
+        public async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Function,  "post", Route = null)] HttpRequest req,
+            ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             string textContent = null;
 
-            //IServiceProvider servProv = _serviceProvider.Value;
-
-            //IAlexaRequestVerifier alexaVerifier = servProv.GetRequiredService<IAlexaRequestVerifier>();
-
             bool isValid = false;
 
             try
             {
-                isValid = await alexaVerifier.IsCertificateValidAsync(req);
+                isValid = await _reqVerifier.IsCertificateValidAsync(req);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.LogError(ex, "Error processing certificate");
 
@@ -72,7 +80,7 @@ namespace Whetstone.AdventureSample.CoreFunction.Alexa
 
             if (!isValid)
                 return new BadRequestResult();
-
+            
             AlexaRequest alexaRequest = null;
 
             try
@@ -90,20 +98,11 @@ namespace Whetstone.AdventureSample.CoreFunction.Alexa
                 log.LogError(ex, $"Error processing alexa request: {textContent}");
 
             }
+
+
+            var alexaResponse = await _adventureProcessor.ProcessAdventureRequestAsync(alexaRequest);
+            return (ActionResult)new OkObjectResult(alexaResponse);
             
-            if (alexaVerifier.IsRequestValid(alexaRequest))
-            {
-                var alexaResponse = await adventureProcessor.ProcessAdventureRequestAsync(alexaRequest);
-                return (ActionResult)new OkObjectResult(alexaResponse);
-            }
-            else
-            {
-                log.LogError($"Alexa request is not valid: {textContent}");
-
-            }
-
-
-            return new BadRequestResult();
         }
     }
 }

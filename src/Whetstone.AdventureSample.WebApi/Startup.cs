@@ -27,8 +27,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Whetstone.AdventureSample.WebApi.Security;
 using Whetstone.AdventureSample.Configuration;
-using Whetstone.AdventureSample.Alexa;
 using System.Threading.Tasks;
+using Whetstone.Alexa.Security;
 
 namespace Whetstone.AdventureSample.WebApi
 {
@@ -56,7 +56,7 @@ namespace Whetstone.AdventureSample.WebApi
             task.Wait();
 
 
-            services.AddTransient<IAlexaRequestVerifier, AlexaCertificateVerifier>();
+            services.AddTransient<Whetstone.Alexa.Security.IAlexaRequestVerifier, AlexaCertificateVerifier>();
 
         }
 

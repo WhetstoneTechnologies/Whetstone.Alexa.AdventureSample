@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Whetstone.AdventureSample", "Whetstone.AdventureSample\Whetstone.AdventureSample.csproj", "{DA7EB83A-3642-4E99-8826-74AF33AE7E50}"
 EndProject
@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Whetstone.Ngrok.ApiClient",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlexaDemo.SpaceFacts", "AlexaDemo.SpaceFacts\AlexaDemo.SpaceFacts.csproj", "{ABBAB428-F1D6-477E-B0FD-5ED9F6112DB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleDemo.SpaceFacts", "GoogleDemo.SpaceFacts\GoogleDemo.SpaceFacts.csproj", "{742F61CC-72DE-4149-8386-B4722ACEDFDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleDemo.SpaceFacts", "GoogleDemo.SpaceFacts\GoogleDemo.SpaceFacts.csproj", "{742F61CC-72DE-4149-8386-B4722ACEDFDA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

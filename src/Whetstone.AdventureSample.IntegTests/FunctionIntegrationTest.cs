@@ -93,30 +93,15 @@ namespace Whetstone.AdventureSample.IntegTests.Alexa
             req = GenerateIntentRequest(userId, "PunchIntent");
             await SendAlexaRequestAsync(req, logger, alexaVerifier, advProcessor);
 
-
-            //req.Session.Attributes = new System.Collections.Generic.Dictionary<string, dynamic>();
-            //req.Session.Attributes.Add("currentnode", currentNode);
-
-
-            //try
-            //{
-            //    resp = await function.FunctionHandlerAsync(req, context);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Debug.WriteLine(ex);
-            //    throw;
-            //}
-
-
-
         }
 
         private async Task SendAlexaRequestAsync(HttpRequest req, ILogger logger, IAlexaRequestVerifier alexaVerifier, IAdventureSampleProcessor advSampleProcessor)
         {
             try
             {
-                IActionResult res = await AlexaFunction.Run(req, logger, alexaVerifier, advSampleProcessor);
+                AlexaFunction alexaFunc = new AlexaFunction(alexaVerifier, advSampleProcessor);
+
+                IActionResult res = await alexaFunc.Run(req, logger);
 
                 ProcessActionResult(res);
 

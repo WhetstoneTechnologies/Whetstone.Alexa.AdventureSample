@@ -53,6 +53,7 @@ namespace Whetstone.AdventureSample
             {
                 if (req.Session.Attributes.ContainsKey(AdventureNode.CURNODE_ATTRIB))
                 {
+
                     curNodeName = (string)req.Session.Attributes[AdventureNode.CURNODE_ATTRIB];
 
                     _logger.LogDebug($"Current node name {curNodeName} found in request");

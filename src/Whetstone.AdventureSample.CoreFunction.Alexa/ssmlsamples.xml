@@ -2,9 +2,11 @@
 <!--
 Sample license text.
 -->
-<prosody volume="+4.08dB">
+<speak>
+<prosody volume="+4.08dB" rate="slow">
   An <phoneme alphabet="x-sampa" ph='"Ig.glls'>Eagles</phoneme> win would have been <phoneme alphabet="x-sampa" ph="nois">nice</phoneme>.
 </prosody>
+</speak>
 
 
   I can speak with my normal pitch,

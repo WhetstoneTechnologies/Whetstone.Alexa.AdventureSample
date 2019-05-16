@@ -27,7 +27,6 @@ using Whetstone.Alexa.Security;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Distributed;
-using Whetstone.AdventureSample.Alexa;
 using Whetstone.Ngrok.ApiClient;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -45,7 +44,7 @@ namespace Whetstone.AdventureSample.Configuration
         public static readonly string MEDIA_PATH = "MediaPath";
         public static readonly string MEDIA_CONTAINER_ACCOUNT = "MediaContainerAccountName";
 
-        internal const string LOG_LEVEL_CONFIG = "LogLevel";
+
         internal const string REDISSERVER_CONFIG = "RedisServer";
         internal const string REDISSERVERINTANCE_CONFIG = "RedisServerInstance";
         public static readonly string STATE_TABLE_NAME = "SessionStateTable";
@@ -92,20 +91,7 @@ namespace Whetstone.AdventureSample.Configuration
                 options.LocalStoreServer = localStoreServer;
             });
 
-            services.AddLogging(logging =>
-            {
-                LogLevel logLevelVal = GetLogLevel(config);
-                logging.SetMinimumLevel(logLevelVal);
-                logging.ClearProviders();
-                logging.AddConsole(x =>
-                {
-                    x.IncludeScopes = false;
-                });
 
-#if DEBUG
-                logging.AddDebug();
-#endif               
-            });
 
             services.AddTransient<IDistributedCache, MemoryDistributedCache>();
             services.AddTransient<IAlexaRequestVerifier, AlexaCertificateVerifier>();
@@ -123,31 +109,25 @@ namespace Whetstone.AdventureSample.Configuration
 
 
 
-        private static LogLevel GetLogLevel(IConfiguration config)
-        {
-            string logLevel = config.GetValue<string>("Logging:LogLevel:Default");
 
-            LogLevel logLevelVal = LogLevel.Warning;
-
-            if (string.IsNullOrWhiteSpace(logLevel))
-                logLevel = config.GetValue<string>(LOG_LEVEL_CONFIG);
-
-            if (!string.IsNullOrWhiteSpace(logLevel))
-                logLevelVal = (LogLevel)Enum.Parse(typeof(LogLevel), logLevel);
-
-
-            return logLevelVal;
-        }
 
 
         private static async Task<string> GetLocalMediaUrlAsync()
         {
-            ILogger logger = GetLogger();
+          //  ILogger logger = GetLogger();
 
-            NgrokClient clientCurClient = new NgrokClient(logger);
+            NgrokClient clientCurClient = new NgrokClient();
             string mediaTunnelUrl = null;
-            List<Tunnel> tunnels = await clientCurClient.GetTunnelListAsync();
+            List<Tunnel> tunnels = null;
 
+            try
+            {
+                tunnels = await clientCurClient.GetTunnelListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Must launch ngrok for this integration test. See the startngrok.bat file in Whetstone.AdventureSample.Integ.Tests");
+            }
 
 
             if (tunnels == null)
@@ -170,22 +150,22 @@ namespace Whetstone.AdventureSample.Configuration
         }
 
 
-        private static ILogger GetLogger()
-        {
+        //private static ILogger GetLogger()
+        //{
 
-            IServiceCollection serviceCollection = new ServiceCollection();
-            serviceCollection.AddLogging(builder => builder
-                .AddConsole()
-                .AddDebug()
-            //.AddFilter(level => level >= LogLevel.Information)
-            );
-            var loggerFactory = serviceCollection.BuildServiceProvider().GetService<ILoggerFactory>();
+        //    IServiceCollection serviceCollection = new ServiceCollection();
+        //    serviceCollection.AddLogging(builder => builder
+        //        .AddConsole()
+        //        .AddDebug()
+        //    //.AddFilter(level => level >= LogLevel.Information)
+        //    );
+        //    var loggerFactory = serviceCollection.BuildServiceProvider().GetService<ILoggerFactory>();
 
 
-            ILogger logger = loggerFactory.CreateLogger("Whetstone.AdventureSample.Configuration.ServiceExtensions");
+        //    ILogger logger = loggerFactory.CreateLogger("Whetstone.AdventureSample.Configuration.ServiceExtensions");
 
-            return logger;
-        }
+        //    return logger;
+        //}
 
 
 

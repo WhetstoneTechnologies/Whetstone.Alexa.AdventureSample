@@ -15,7 +15,7 @@ namespace Whetstone.Ngrok.ApiClient
 
        private static readonly HttpClient _httpClient;
 
-        private ILogger _logger;
+       private ILogger _logger = null;
 
         static NgrokClient()
         {
@@ -28,6 +28,13 @@ namespace Whetstone.Ngrok.ApiClient
         public NgrokClient(ILogger logger)
         {
             _logger = logger;
+
+
+        }
+
+        public NgrokClient()
+        {
+            _logger = null;
 
 
         }
@@ -47,7 +54,8 @@ namespace Whetstone.Ngrok.ApiClient
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Failed to deserialize ngrok tunnel response");
+                    if(_logger!=null)
+                     _logger.LogError(ex, "Failed to deserialize ngrok tunnel response");
                     throw;
                 }
 
