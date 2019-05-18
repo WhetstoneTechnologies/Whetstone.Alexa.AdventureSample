@@ -15,11 +15,15 @@ Create an Azure account [portal.azure.com](https://portal.azure.com).
 
 Create an account on [nGrok](https://ngrok.com/) and download the ngrok.exe. Make it available in your local path. This creates a public IP address used to tunnel to your development environment.
 
-Install Visual Studio 2017 Community Edition (or another edition)
+Install Visual Studio 2017 Community Edition (or another edition). Visual Studio 2019 (and edition) will also work.
 
 Enable Azure development tools in the Visual Studio 2017 install.
 
  <img src="/docs/images/AzureDevTools.png?raw=true" width="50%">
+
+If using Visual Studio 2017, install [.NET Core 2.2.106 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2#sdk-2.2.106).
+
+If using Visual Studio 2019, install [.NET Core 2.2.203 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2#sdk-2.2.203).
 
 ## Part One - Create the Azure Function 
 
@@ -47,7 +51,7 @@ This section applies the natural language processing model Alexa uses to map use
 
 1. Obtain an intent.json file from the following link. Use the file appropriate to your local (e.g. en-US for the United States).
 
-[https://github.com/WhetstoneTechnologies/Whetstone.Alexa.AdventureSample/tree/master/src/Demo.SpaceFacts/intents](https://github.com/WhetstoneTechnologies/Whetstone.Alexa.AdventureSample/tree/master/src/Demo.SpaceFacts/intents)
+[https://github.com/WhetstoneTechnologies/Whetstone.Alexa.AdventureSample/tree/master/src/AlexaDemo.SpaceFacts/intents](https://github.com/WhetstoneTechnologies/Whetstone.Alexa.AdventureSample/tree/master/src/AlexaDemo.SpaceFacts/intents)
 
 2.  On the left hand navigation panel, select the JSON Editor tab under Interaction Model. In the textfield provided, replace any existing code with the code provided in the Interaction Model (make sure to pick the model that matches your skill's language). Click Save Model.
 
@@ -57,6 +61,6 @@ Note: You should notice that Intents and Slot Types will auto populate based on 
 
 Optional: Select an intent by expanding the Intents from the left side navigation panel. Add some more sample utterances for your newly generated intents. Think of all the different ways that a user could request to make a specific intent happen. A few examples are provided. Be sure to click Save Model and Build Model after you're done making changes here.
 
-If your interaction model builds successfully, proceed to the next step. If not, you should see an error. Try to resolve the errors. In our next step of this guide, we will be creating our Lambda function in the AWS developer console, but keep this browser tab open, because we will be returning here on Page #3: Connect VUI to Code.
+If your interaction model builds successfully, proceed to the next step. If not, you should see an error. Try to resolve the errors. In our next step of this guide, we will be creating our Lambda function in the AWS developer console.
 
 [Next Module](/docs/spacefactstutorial/SpaceFactsTutorial02.md)

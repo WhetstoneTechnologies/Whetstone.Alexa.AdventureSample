@@ -59,7 +59,7 @@ Install-Module -Name Az -AllowClobber
 
    _AzureStorageEmulator.exe start_
 
-4. Upload the media file to local storage using the PowerShell Script available here: [Create-AlexaLocalEnvironment](\src\AlexaDemo.SpaceFacts\Create-AlexaLocalEnvironment.ps1). Place the script in the root of your project directory. Open a PowerShell command prompt from your project directory and execute:
+4. Upload the media file to local storage using the PowerShell Script available here: [Create-AlexaLocalEnvironment](/src/AlexaDemo.SpaceFacts/Create-AlexaLocalEnvironment.ps1). Place the script in the root of your project directory. Open a PowerShell command prompt from your project directory and execute:
 
 ``` powershell
 .\Create-AlexaLocalEnvironment.ps1
@@ -399,8 +399,7 @@ Storage Account Name: alexademospacefactsNNNN
 
 ```
 
-
-4. Upload the media files to Azure Blob storage. Download the [Create-AlexaCloudEnvironment.ps1](\src\AlexaDemo.SpaceFacts\Create-AlexaCloudEnvironment.ps1) PowerShell script and place it in your project root directory. Open a PowerShell command line interface and execute the script using the resource group name and storage account name found in step 1. 
+4. Upload the media files to Azure Blob storage. Download the [Create-AlexaCloudEnvironment.ps1](/src/AlexaDemo.SpaceFacts/Create-AlexaCloudEnvironment.ps1) PowerShell script and place it in your project root directory. Open a PowerShell command line interface and execute the script using the resource group name and storage account name found in step 1. 
 
 ``` C#
 Get-AzStorageAccount -Name alexademospacefactsNNNN -ResourceGroupName AlexaDemoSpaceFacts2019NNNNNNResourceGroup

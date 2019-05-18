@@ -25,7 +25,7 @@ Download and install the [Azure Storage Emulator](https://docs.microsoft.com/en-
 
 1. Launch the Microsoft Azure Storage Emulator by searching for it in the Windows search bar.
 
-<img src="/src/docs/images/MicrosoftStorageEmulator.png?raw=true" width="40%">
+<img src="/docs/images/MicrosoftStorageEmulator.png?raw=true" width="40%">
 
 2. Initialize the Microsoft Azure Storage Emulator by opening a DOS command prompt. Execute the following to initialize the emulator:
 ```
@@ -41,11 +41,11 @@ C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator> AzureStorageEmulat
   
    - Create a new Azure Storage Emulator task by selecting Create Task.
   
-     <img src="/src/docs/images/TaskSchedulerAzTask.png?raw=true" width="50%">
+     <img src="/docs/images/TaskSchedulerAzTask.png?raw=true" width="50%">
   
    - Select the Tiggers tab and create a new trigger. Select the dropdown combo box next to "Begin the task:" and select "At log on"
   
-     <img src="/src/docs/images/AtLogon.png?raw=true" width="40%">
+     <img src="/docs/images/AtLogon.png?raw=true" width="40%">
   
    - Select the Actions tab and create a new action. Leave the default entry, "Start a program", in the Action selection.
   
@@ -56,7 +56,7 @@ C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator> AzureStorageEmulat
      
      Enter _start_ in the Add Arguments text box.
   
-     <img src="/src/docs/images/StorageEmulatorStart.png?raw=true" width="40%">
+     <img src="/docs/images/StorageEmulatorStart.png?raw=true" width="40%">
   
    - Click Ok.
   
@@ -94,7 +94,7 @@ ngrok http 54768
 
 This should launch a temporary server.
 
- <img src="/src/docs/images/ngroksample.png?raw=true" width="70%">
+ <img src="/docs/images/ngroksample.png?raw=true" width="70%">
 
 For more references about using nGrok, please see [How To Debug An Alexa .NET Core Skill](https://www.c-sharpcorner.com/article/how-to-debug-an-alexa-net-core-skill/)
 
